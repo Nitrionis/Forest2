@@ -6,11 +6,11 @@ namespace Map
 	{
 		public static ParticleSystem speedParticleSystem;
 		private const float easySpeed = 25;
-		private const float hardSpeed = 30;
+		private const float hardSpeed = 40;
 
-		private const float defaultTreesSpacing = 8;
-		private const float easyTreesSpacing = 9;
-		private const float hardTreesSpacing = 9;
+		private const float defaultTreesSpacing = 11;
+		private const float easyTreesSpacing = 16;
+		private const float hardTreesSpacing = 11;
 
 		private float levelDuration = 20;
 
@@ -66,12 +66,14 @@ namespace Map
 			targetSpeed = Mathf.Lerp(easySpeed, hardSpeed, difficulty);
 			CameraMover.LockSpeed(speed);
 			speedParticleSystem.Play();
+			Score.scoreCoef = 2f;
 		}
 
 		public override void Finish()
 		{
 			CameraMover.UnlockSpeed();
 			speedParticleSystem.Stop();
+			Score.scoreCoef = 1f;
 		}
 
 		//private void Change

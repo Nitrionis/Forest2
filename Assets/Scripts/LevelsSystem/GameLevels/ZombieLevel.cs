@@ -4,8 +4,8 @@ namespace Map
 {
 	public class ZombieLevel : Level
 	{
-		private const float baseLevelDistance = 150;
-		private const float maxLevelDistance = 300;
+		private const float baseLevelDistance = 320;
+		private const float maxLevelDistance = 640;
 
 		private class ZombieCreationStrategy
 		{
@@ -34,12 +34,15 @@ namespace Map
 			};
 		}
 
+		private float levelDuration;
+		private float timeCount;
 		private int strategyIndex;
 
 		public ZombieLevel(bool isEmpty = false) : base(isEmpty)
 		{
 			if (!isEmpty)
 			{
+				timeCount = 0;
 				strategyIndex = 0;//(int)(strategies.Length * 0.999f * Random.value)*/;
 				zombieMover.zombieCreationAngleRange = strategies[strategyIndex].GetZombieCreationAngleRange();
 			}
@@ -56,20 +59,37 @@ namespace Map
 				lastlLevel.levelStartEnd.y,
 				lastlLevel.levelStartEnd.y + Mathf.Lerp(
 					baseLevelDistance, 
-					Mathf.Lerp(baseLevelDistance, maxLevelDistance, difficulty), 
-					Random.value)
-			);
+					Mathf.Lerp(
+						baseLevelDistance, 
+						maxLevelDistance, 
+						difficulty), 
+					(1.0f + Random.value) * 0.5f));
+			//Debug.Log("Level start end " + levelStartEnd);
+			levelDuration = (levelStartEnd.y - levelStartEnd.x) / CameraMover.instance.moveSpeed;
+		}
+
+		public override void Update()
+		{
+			if (IsLevelActive())
+			{
+				timeCount += Time.deltaTime;
+				if (timeCount > 3)
+					zombieMover.isSpawnActive = true;
+				if (timeCount > levelDuration)
+					zombieMover.isSpawnActive = false;
+			}
 		}
 
 		public override void Start()
 		{
-			zombieMover.isActive = true;
+			zombieMover.isMoveActive = true;
 			SkyboxChanger.DayToNight();
 		}
 
 		public override void Finish()
 		{
-			zombieMover.isActive = false;
+			zombieMover.isSpawnActive = false;
+			zombieMover.isMoveActive = false;
 			SkyboxChanger.NightToDay();
 		}
 	}

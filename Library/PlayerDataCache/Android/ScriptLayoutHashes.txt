@@ -1,10 +1,10 @@
 Android
 PlayerPath?
-D:/Programing/unity/Forest/Forest/Build/forestVr8.apk
+D:/Programing/unity/Forest/Forest/Build/forestVr10.apk
 SceneListBegin?
 Assets/Scenes/MainScene.unity
 SceneListEnd?
-7c7f4b4833e6563c0894e64b789ec147 Assembly-CSharp.dll:.Score
+dd9da675021c3510c4f55177c778f0e1 Assembly-CSharp.dll:.Score
 984dcc0ba3707b7691fbdca8ff508d28 Unity.TextMeshPro.dll:TMPro.TMP_SelectionCaret
 23efcd1831b04ace52b7b3485f150f24 Assembly-CSharp.dll:.GvrDropdown
 8f9981ae062e1a02c7f0bcdf63e95233 Assembly-CSharp.dll:GoogleVR.HelloVR.HeadsetDemoManager
@@ -23,6 +23,7 @@ e1bbf0ab858085e38fae6b12ebbdcd35 UnityEngine.Timeline.dll:UnityEngine.Timeline.P
 201e3fde670b00545944bb3db215c80a UnityEngine.Timeline.dll:UnityEngine.Timeline.TimelineAsset
 e7a73f5f78ba6445195ec23b74a1ce2d Unity.TextMeshPro.dll:TMPro.TMP_ScrollbarEventHandler
 84b31b71fcfc0d02bf4204522ea292b1 Assembly-CSharp.dll:.GvrVideoPlayerTexture
+0b5d9b2695964beb4ff33b879b362feb Assembly-CSharp.dll:.ReticleChanger
 71bb6a6b6c8f052f948db64c7dd3ca4f UnityEngine.Advertisements.Editor.dll:UnityEngine.Advertisements.Editor.Placeholder
 cf9f5cf2c3145a37ac07f00e50e460f9 UnityEngine.UI.dll:UnityEngine.UI.AspectRatioFitter
 71bb6a6b6c8f052f948db64c7dd3ca4f UnityEngine.UI.dll:UnityEngine.EventSystems.BaseInput
@@ -200,7 +201,7 @@ a4f0a4f62100f1a4fb5cbe0e00dde83f Unity.TextMeshPro.dll:TMPro.TextMeshProUGUI
 d251bf88db6c95a6b1aa0b69298da9ef UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
 89c433fef753b02de32958d7fe54cc06 Assembly-CSharp.dll:.GvrLaserVisual
 c8a7a2ef3692d34c8a1465973843d934 Assembly-CSharp.dll:.GvrControllerVisual
-098e82adc2ee8ed1a8c4d5b8b0656c99 Assembly-CSharp.dll:.SkyboxChanger
+307979b4af4b9f765cfbdd89674dc6cf Assembly-CSharp.dll:.SkyboxChanger
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:GoogleVR.VideoDemo.ScrubberEvents
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:GoogleVR.VideoDemo.VideoControlsManager
 d791aa6007fa3640be1164ea75bb087d Unity.TextMeshPro.dll:TMPro.TMP_StyleSheet

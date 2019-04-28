@@ -52,8 +52,11 @@
 			v2f vert (appdata v)
 			{
 				v2f o;
-				o.vertex = UnityObjectToClipPos(v.vertex);
+				o.vertex = v.vertex;
+				o.vertex.x += _WorldSpaceCameraPos.x * 0.0416;
+				o.vertex = UnityObjectToClipPos(o.vertex);
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+				o.uv.x -= _WorldSpaceCameraPos.x * 0.125;
 				float3 worldNormal = UnityObjectToWorldNormal(v.normal);
 				o.vlight = LightingLambertVS(worldNormal, _WorldSpaceLightPos0.xyz);
 				UNITY_TRANSFER_FOG(o,o.vertex);

@@ -71,9 +71,12 @@ public class CameraMover : MonoBehaviour
 			currRotation = Mathf.Min(currRotation + rotationSpeed * Time.deltaTime, maxAngle);
 		}
 		currRotation = transform.rotation.eulerAngles.y;
+		float currRotationZ = transform.rotation.eulerAngles.z;
+		if (currRotationZ > 180)
+			currRotationZ -= 360;
 		if (currRotation > 180)
-			currRotation = currRotation - 360;
-		currRotation = Mathf.Clamp(currRotation, minAngle, maxAngle);
+			currRotation -= 360;
+		currRotation = Mathf.Clamp(currRotation - currRotationZ * 2, minAngle, maxAngle);
 
 		slider.value = (currRotation + maxAngle) / (maxAngle * 2);
 
@@ -129,6 +132,7 @@ public class CameraMover : MonoBehaviour
 
 	public static void FatalСollision()
 	{
+		Score.Сollision();
 		instance.shakeState = Shake.Fatal;
 	}
 

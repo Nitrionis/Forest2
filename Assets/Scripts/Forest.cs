@@ -269,10 +269,10 @@ namespace Map
 					//minDist = Mathf.Min(minDist, distance);
 
 					float distanceScaleFactor = scalePresets[tree.scaleIndex].x;
-					if (distance < collisionDistance[tree.scaleIndex])
+					if (tree.isActive && distance < collisionDistance[tree.scaleIndex])
 						CameraMover.FatalСollision();
-					else if (distance < 2f + 1f * distanceScaleFactor)
-						CameraMover.NonfatalСollision();
+					//else if (distance < 2f + 1f * distanceScaleFactor)
+					//	CameraMover.NonfatalСollision();
 
 					float angle = Vector3.Angle(forward, tree.position - posForCulling);
 					if ((angle <= halfFOV && distance < 55) || distance < 10)

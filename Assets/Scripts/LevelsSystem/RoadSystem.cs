@@ -32,12 +32,11 @@ namespace Map
 				roadUp = Vector3.Cross(roadForward, Vector3.right);
 			}
 
-			// logicDir.magnitude = 1
 			public Vector3 center;
 			public RoadObject roadObject;
 			public List<Rigidbody> cars;
 			public float carsSpeed = 20;
-			// direction.magnitude = 1, center is point on the line
+			
 			public Road(Vector3 center, float carsSpeed)
 			{
 				this.center = center;
@@ -48,7 +47,7 @@ namespace Map
 			public void ActivateRenderer(RoadObject roadObject)
 			{
 				this.roadObject = roadObject;
-				center.x = character.position.x;
+				//center.x = character.position.x;
 				roadObject.transform.position = center;
 				roadObject.transform.rotation = identityQuaternion;
 				roadObject.renderer.enabled = true;
@@ -65,6 +64,7 @@ namespace Map
 		private Transform character;
 		private GameObject roadPrefab;
 		private GameObject carPrefab;
+		private Quaternion inversCarRotation;
 		// usedRoads is roads game objects which rendering now
 		private Queue<RoadObject> usedRoads;
 		// free roads
@@ -79,11 +79,12 @@ namespace Map
 
 		private const int roadsCount = 6;
 		// max roads per level = 16, max active levels count = 4
-		private const int maxLogicRoadsCount = 4 * 16;
-		private const float basePlaneSize = 10;
+		private const int maxLogicRoadsCount = 64;
+		private const float halfRoadWidth = 6;
 		private const float roadDestroyDistance = 30;
 
 		public float roadOffsetByY;
+
 
 		public RoadSystem(LevelGeneratorParameters parameters)
 		{
@@ -92,6 +93,7 @@ namespace Map
 			character = parameters.character;
 			roadPrefab = parameters.roadPrefab;
 			carPrefab = parameters.carPrefab;
+			inversCarRotation = carPrefab.transform.rotation * Quaternion.AngleAxis(180, Vector3.up);
 
 			Road.character = character;
 
@@ -99,6 +101,14 @@ namespace Map
 
 			roadsRenderingNow = new Queue<Road>(roadsCount);
 			roadsAwaitingRendering = new Queue<Road>(maxLogicRoadsCount);
+
+			var meshFilter = roadPrefab.GetComponent<MeshFilter>();
+			Mesh mesh = meshFilter.mesh;
+			//Debug.Log(mesh.bounds);
+			Bounds bounds = mesh.bounds;
+			bounds.extents = new Vector3(1000000, 0, 5);
+			mesh.bounds = bounds;
+
 
 			unusedRoads = new Queue<RoadObject>(roadsCount);
 			for (int i = 0; i < roadsCount; i++)
@@ -126,13 +136,17 @@ namespace Map
 			{
 				var firstRoad = roadsRenderingNow.Peek();
 				float distance = firstRoad.GetDistance(character.position);
-				if (distance < -roadDestroyDistance)
+				if (distance > roadDestroyDistance)
+				{
+					//Debug.Log("DeactivateFirstRoadInQueue");
 					DeactivateFirstRoadInQueue();
+				}
 			}
 			if (unusedRoads.Count > 0
 				&& roadsAwaitingRendering.Count > 0
 				&& roadsRenderingNow.Count < roadsCount)
 			{
+				//Debug.Log("Get Next Road from unusedRoads");
 				var gameObject = unusedRoads.Dequeue();
 				usedRoads.Enqueue(gameObject);
 
@@ -152,33 +166,34 @@ namespace Map
 
 		public void MoveCars()
 		{
-			int currIndex = 0;
 			foreach (Road r in roadsRenderingNow)
 			{
-				//if (r.cars.Count < 3 && unusedCars.Count > 0)
-				//{
-				//	Rigidbody rb = unusedCars.Dequeue();
-				//	Vector3 carPos = r.center + Vector3.right * (-60) + (-20) * currIndex * Vector3.right;
-				//	if (r.cars.Count > 0 && Vector3.Distance(carPos, r.cars[r.cars.Count - 1].position) < 10)
-				//		carPos = r.cars[r.cars.Count - 1].position + Vector3.right * (-10);
-				//	rb.position = carPos;
-				//	rb.rotation = carPrefab.transform.rotation;
-				//	r.cars.Add(rb);
-				//}
-				//for (int i = 0; i < r.cars.Count; i++)
-				//{
-				//	Rigidbody rb = r.cars[i];
-				//	if (character.position.z < rb.position.z && Vector3.Distance(rb.position, character.position) < 65)
-				//	{
-				//		rb.MovePosition(rb.position + Vector3.right * Time.fixedDeltaTime * r.carsSpeed);
-				//	}
-				//	else
-				//	{
-				//		unusedCars.Enqueue(rb);
-				//		r.cars.RemoveAt(i);
-				//	}
-				//}
-				currIndex++;
+				for (int i = 0; i < r.cars.Count; i++)
+				{
+					Rigidbody rb = r.cars[i];
+					if (character.position.z - 10 < rb.position.z && Vector3.Distance(rb.position, character.position) < 65)
+					{
+						rb.MovePosition(rb.position + Time.fixedDeltaTime * r.carsSpeed * Vector3.right);
+					}
+					else
+					{
+						unusedCars.Enqueue(rb);
+						r.cars.RemoveAt(i);
+					}
+				}
+				if (r.cars.Count < 3 && unusedCars.Count > 0)
+				{
+					Rigidbody rb = unusedCars.Dequeue();
+					float xOffset = r.carsSpeed < 0 ? 50 : -50;
+					Vector3 carPos = new Vector3(character.position.x + xOffset, r.center.y, r.center.z);
+					float carSpacing = 10 + 10 * Level.difficulty;
+					if (r.cars.Count > 0 && Vector3.Distance(carPos, r.cars[r.cars.Count - 1].position) < carSpacing)
+						carPos = r.cars[r.cars.Count - 1].position + Mathf.Sign(-xOffset) * carSpacing * Vector3.left;
+					rb.position = carPos;
+					rb.rotation = r.carsSpeed < 0 ? inversCarRotation : carPrefab.transform.rotation;
+					rb.velocity = Vector3.zero;
+					r.cars.Add(rb);
+				}
 			}
 		}
 
@@ -187,8 +202,7 @@ namespace Map
 			foreach (Road r in instance.roadsRenderingNow)
 			{
 				float sdist = r.GetDistance(p);
-				float dist = Mathf.Abs(sdist);
-				if (dist < 5) // 10 is road width
+				if (sdist > -halfRoadWidth && sdist < halfRoadWidth)
 					return true;
 			}
 			return false;
@@ -213,6 +227,7 @@ namespace Map
 
 		public void CheckGlobalCollision(Road road)
 		{
+			//Debug.Log("CheckGlobalCollision");
 			var grid = Forest.GetGrid();
 			for (int d = 0; d < grid.Length; d++)
 			{
@@ -223,11 +238,9 @@ namespace Map
 					{
 						float sdist = road.GetDistance(tree.position);
 						float dist = Mathf.Abs(sdist);
-						tree.isActive = dist >= 6; // 10 is road width
+						tree.isActive = dist < -halfRoadWidth || dist > halfRoadWidth;
 						if (!tree.isActive && tree.treeObject != null)
-						{
 							tree.treeObject.mainTransform.position += Vector3.down * 16;
-						}
 					}
 				}
 			}

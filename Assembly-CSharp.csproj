@@ -200,6 +200,7 @@
     <Compile Include="Assets\Scripts\LevelsSystem\PlanesSystem.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\RoadSystem.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\ZombieMover.cs" />
+    <Compile Include="Assets\Scripts\ReticleChanger.cs" />
     <Compile Include="Assets\Scripts\Score.cs" />
     <Compile Include="Assets\Scripts\SkyboxChanger.cs" />
     <Compile Include="Assets\Scripts\SuperQueue.cs" />

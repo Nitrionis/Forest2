@@ -5,7 +5,8 @@ namespace Map
 	public class ZombieMover
 	{
 		private bool prevActiveState = false;
-		public bool isActive = false;
+		public bool isSpawnActive = false;
+		public bool isMoveActive = false;
 
 		private struct Zombie
 		{
@@ -38,9 +39,9 @@ namespace Map
 
 		public void FixedUpdate()
 		{
-			if (isActive)
+			if (isMoveActive)
 			{
-				if (!prevActiveState)
+				if (!prevActiveState && isSpawnActive)
 				{
 					prevActiveState = true;
 					for (int i = 0; i < maxMobsCount; i++)
@@ -51,7 +52,7 @@ namespace Map
 					Vector3 pos = mobs[i].gameObject.transform.position;
 					CameraMover c = CameraMover.instance;
 					Vector3 newPos = pos;
-					if (pos.z < character.position.z || pos.y < character.position.y - 100)
+					if (isSpawnActive && (pos.z < character.position.z || pos.y < character.position.y - 100))
 					{
 						Vector3 offset = Quaternion.AngleAxis(Random.Range(
 								zombieCreationAngleRange.x,
@@ -59,6 +60,7 @@ namespace Map
 							c.upAxis) * c.moveDir;
 						newPos = character.position + offset * 54;
 						mobs[i].rigidbody.velocity = Vector3.zero;
+						mobs[i].rigidbody.rotation = Quaternion.identity;
 					}
 					Vector3 moveDir = -(newPos - character.position);
 					moveDir.y = 0;
@@ -67,7 +69,7 @@ namespace Map
 					mobs[i].rigidbody.MoveRotation(Quaternion.LookRotation(moveDir, Vector3.up));
 				}
 			}
-			else if (!isActive && prevActiveState)
+			else if (!isMoveActive && prevActiveState)
 			{
 				prevActiveState = false;
 				for (int i = 0; i < maxMobsCount; i++)

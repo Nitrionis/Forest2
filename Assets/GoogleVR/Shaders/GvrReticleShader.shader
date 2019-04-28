@@ -15,9 +15,11 @@
 Shader "GoogleVR/Reticle" {
   Properties {
     _Color  ("Color", Color) = ( 1, 1, 1, 1 )
+	_RetColor  ("MyColor", Color) = ( 1, 1, 1, 1 )
     _InnerDiameter ("InnerDiameter", Range(0, 10.0)) = 1.5
     _OuterDiameter ("OuterDiameter", Range(0.00872665, 10.0)) = 2.0
     _DistanceInMeters ("DistanceInMeters", Range(0.0, 100.0)) = 2.0
+	_InnerCoef ("Inner coef", Range(0, 10.0)) = 1
   }
 
   SubShader {
@@ -42,6 +44,8 @@ Shader "GoogleVR/Reticle" {
       uniform float _InnerDiameter;
       uniform float _OuterDiameter;
       uniform float _DistanceInMeters;
+	  uniform float4 _RetColor;
+	  uniform float _InnerCoef;
 
       struct vertexInput {
         float4 vertex : POSITION;
@@ -52,7 +56,7 @@ Shader "GoogleVR/Reticle" {
       };
 
       fragmentInput vert(vertexInput i) {
-        float scale = lerp(_OuterDiameter, _InnerDiameter, i.vertex.z);
+        float scale = lerp(_OuterDiameter, _InnerDiameter * _InnerCoef, i.vertex.z);
 
         float3 vert_out = float3(i.vertex.x * scale, i.vertex.y * scale, _DistanceInMeters);
 
@@ -62,7 +66,7 @@ Shader "GoogleVR/Reticle" {
       }
 
       fixed4 frag(fragmentInput i) : SV_Target {
-        fixed4 ret = _Color;
+        fixed4 ret = _Color * _RetColor;
         return ret;
       }
 

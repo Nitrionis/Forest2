@@ -113,7 +113,7 @@ namespace Map
 		{
 			strategy = GetRandomStrategy();
 
-			float levelDistance = strategy.CalculateAllLaunchesTime()
+			float levelDistance = (3 + strategy.CalculateAllLaunchesTime())
 				* CameraMover.instance.moveSpeed;
 			float levelStartPos = lastlLevel.levelStartEnd.y;
 			levelStartEnd = new Vector2(levelStartPos, levelStartPos + levelDistance);
