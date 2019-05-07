@@ -138,14 +138,14 @@ namespace Map
 
 			SpeedLevel.speedParticleSystem = speedParticleSystem;
 
-			levels.Enqueue(new EmptyLevel());
-			Level.lastlLevel = levels.Peek();
+			Level.lastlLevel = new EmptyLevel();
+			levels.Enqueue(Level.lastlLevel);
 
 			for (int i = 1; i < levelsCount; i++)
 			{
-				levels.Enqueue(new SimpleLevel());
+				Level.lastlLevel = new SimpleLevel();
+				levels.Enqueue(Level.lastlLevel);
 			}
-			Level.lastlLevel = levels.Peek();
 		}
 
 		void Update()
@@ -205,6 +205,7 @@ namespace Map
 		private Level GetNextLevel()
 		{
 			float f = UnityEngine.Random.value;
+			//Debug.Log("f is " + f);
 			foreach (var l in probabilities)
 			{
 				if (l.Check(f))

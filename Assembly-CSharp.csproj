@@ -203,7 +203,6 @@
     <Compile Include="Assets\Scripts\ReticleChanger.cs" />
     <Compile Include="Assets\Scripts\Score.cs" />
     <Compile Include="Assets\Scripts\SkyboxChanger.cs" />
-    <Compile Include="Assets\Scripts\SuperQueue.cs" />
     <Compile Include="Assets\Scripts\WheelMover.cs" />
     <Compile Include="Assets\Scripts\СollisionСheck.cs" />
     <None Include="Assets\Shaders\MobsGlow.shader" />
@@ -218,11 +217,9 @@
     <None Include="Assets\Shaders\Wheel.shader" />
     <None Include="Assets\Shaders\BulletGlow.shader" />
     <None Include="Assets\Shaders\NewUnlitShader.shader" />
-    <None Include="Assets\Mobs\Toon Zombie S\TSF\Shaders\TSFOutline.shader" />
     <None Include="Assets\GoogleVR\Shaders\GvrController.shader" />
     <None Include="Assets\GoogleVR\Shaders\GvrUnlitTransparentOverlay.shader" />
     <None Include="Assets\GoogleVR\Shaders\GvrUnlitTransparentOverlayColor.shader" />
-    <None Include="Assets\Mobs\Toon Zombie S\TSF\Shaders\TSF.shader" />
     <None Include="Assets\GoogleVR\Plugins\Android\AndroidManifest-6DOF.xml" />
     <None Include="Assets\Shaders\Road.shader" />
     <None Include="Assets\GoogleVR\Shaders\Video\VideoUnlitShader.shader" />
@@ -240,7 +237,6 @@
     <None Include="Assets\GoogleVR\Plugins\Android\proguard-gvr.txt" />
     <None Include="Assets\GoogleVR\Plugins\Android\AndroidManifest-Cardboard.xml" />
     <None Include="Assets\Shaders\Ground.shader" />
-    <None Include="Assets\Mobs\NewMob1\NewUnlitShader.shader" />
     <None Include="Assets\Shaders\Skybox.shader" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>D:/Programing/unity/Forest/Forest/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>

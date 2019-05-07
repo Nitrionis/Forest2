@@ -1,6 +1,6 @@
 Android
 PlayerPath?
-D:/Programing/unity/Forest/Forest/Build/forestVr10.apk
+D:/Programing/unity/Forest/Forest/Build/forest.aab
 SceneListBegin?
 Assets/Scenes/MainScene.unity
 SceneListEnd?

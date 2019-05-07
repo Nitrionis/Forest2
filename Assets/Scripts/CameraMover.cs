@@ -41,7 +41,7 @@ public class CameraMover : MonoBehaviour
 	void Start()
     {
 		instance = this;
-
+		
 		planeStartRotation = plane.transform.rotation;
 
 		minAngle = -maxAngle;

@@ -8,7 +8,7 @@ namespace Map
 
 		public SimpleLevel(bool isEmpty = false) : base(isEmpty)
 		{
-			//Debug.Log("new SimpleLevel");
+			//Debug.Log("new SimpleLevel " + levelStartEnd);
 		}
 
 		public override Level CreateNew()

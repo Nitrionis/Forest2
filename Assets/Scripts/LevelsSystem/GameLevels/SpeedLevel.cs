@@ -66,7 +66,7 @@ namespace Map
 			targetSpeed = Mathf.Lerp(easySpeed, hardSpeed, difficulty);
 			CameraMover.LockSpeed(speed);
 			speedParticleSystem.Play();
-			Score.scoreCoef = 2f;
+			Score.scoreCoef = 3f;
 		}
 
 		public override void Finish()

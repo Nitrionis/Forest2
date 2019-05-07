@@ -30,9 +30,11 @@ namespace Map
 		public MotorwayLevel(bool isEmpty = false) : base(isEmpty)
 		{
 			levelId = LevelId.Motorway;
-			//Debug.Log("new MotorwayLevel");
 			if (!isEmpty)
+			{
+				//Debug.Log("new MotorwayLevel");
 				roadSystem.AddRoadsToQueue(roads);
+			}
 		}
 
 		public override Level CreateNew()
