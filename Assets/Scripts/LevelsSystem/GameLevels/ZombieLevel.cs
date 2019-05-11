@@ -40,10 +40,11 @@ namespace Map
 
 		public ZombieLevel(bool isEmpty = false) : base(isEmpty)
 		{
+			levelType = LevelType.Zombies;
 			if (!isEmpty)
 			{
 				timeCount = 0;
-				strategyIndex = 0;//(int)(strategies.Length * 0.999f * Random.value)*/;
+				strategyIndex = 0;
 				zombieMover.zombieCreationAngleRange = strategies[strategyIndex].GetZombieCreationAngleRange();
 			}
 		}
@@ -64,7 +65,6 @@ namespace Map
 						maxLevelDistance, 
 						difficulty), 
 					(1.0f + Random.value) * 0.5f));
-			//Debug.Log("Level start end " + levelStartEnd);
 			levelDuration = (levelStartEnd.y - levelStartEnd.x) / CameraMover.instance.moveSpeed;
 		}
 

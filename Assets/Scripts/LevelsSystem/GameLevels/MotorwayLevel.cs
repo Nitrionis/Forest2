@@ -29,10 +29,9 @@ namespace Map
 
 		public MotorwayLevel(bool isEmpty = false) : base(isEmpty)
 		{
-			levelId = LevelId.Motorway;
+			levelType = LevelType.Motorway;
 			if (!isEmpty)
 			{
-				//Debug.Log("new MotorwayLevel");
 				roadSystem.AddRoadsToQueue(roads);
 			}
 		}
@@ -45,22 +44,12 @@ namespace Map
 		public override void InitializeLevelRect()
 		{
 			float levelStartPos = lastlLevel.levelStartEnd.y + 10;
-			//Debug.Log("CurrLevelStatPos " + levelStartPos);
 
 			int roadCount = GetRoadCountInGroup();
 			roads = new List<RoadSystem.Road>(roadCount);
 			
 			roads.Add(new RoadSystem.Road(roadForwardForZOffset * levelStartPos
 				+ Vector3.up * roadSystem.roadOffsetByY, GetNextRoadCarSpeed()));
-
-			if (InitRectCallCount > 1)
-			{
-				//var prevRoads = ((MotorwayLevel)lastlLevel).roads;
-				//Debug.Log("Prev level last road pos " + prevRoads[prevRoads.Count - 1].center +
-				//	"\nCurr level first road pos " + roads[0].center
-				//	+ "\nPrev level end pos" + lastlLevel.levelStartEnd.y
-				//	+ "\nCurr level start pos" + levelStartPos);
-			}
 
 			for (int i = 1; i < roadCount; i++)
 			{
@@ -73,7 +62,6 @@ namespace Map
 			}
 			float levelEndPos = roads[roadCount - 1].center.z + 10;
 			levelStartEnd = new Vector2(levelStartPos, levelEndPos);
-			//Debug.Log("Level distance " + levelStartEnd);
 			
 			InitRectCallCount++;
 		}
@@ -93,7 +81,6 @@ namespace Map
 
 		private float GetNextRoadSpacing(float speed)
 		{
-			//return 16;
 			return Random.Range(
 				Mathf.Lerp(
 					baseRoadSpacing, minRoadSpacing, difficulty - (maxCarSpeed - speed)/maxSpeedDelta
@@ -104,10 +91,5 @@ namespace Map
 		{
 			return Mathf.Lerp(minCarSpeed, Mathf.Lerp(minCarSpeed, maxCarSpeed, difficulty), Random.value);
 		}
-
-		//private float CalculateCarSpawnTime(RoadSystem.Road road)
-		//{
-		//	return 0;
-		//}
 	}
 }

@@ -20,7 +20,10 @@ namespace Map
 		private float timeCount;
 		private float treesSpacing;
 
-		public SpeedLevel(bool isEmpty = false) : base(isEmpty){}
+		public SpeedLevel(bool isEmpty = false) : base(isEmpty)
+		{
+			levelType = LevelType.Speed;
+		}
 
 		public override Level CreateNew()
 		{

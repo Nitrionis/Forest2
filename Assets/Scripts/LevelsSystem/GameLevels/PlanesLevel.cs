@@ -26,6 +26,7 @@ namespace Map
 
 			public WallStrategy(Level level) : base(level)
 			{
+				// TODO
 				wavesCount = 2 + (int)(Random.value * 2.99f);
 			}
 			public override float CalculateAllLaunchesTime()
@@ -42,62 +43,11 @@ namespace Map
 			}
 		}
 
-		private class DiveStrategy : Strategy
-		{
-			static Quaternion rotateLeft, rotateRight;
-			static Quaternion startRotationOne, startRotationTwo;
-
-			static DiveStrategy()
-			{
-				rotateLeft = Quaternion.Euler(0.0f, 15.0f, 0.0f);
-				rotateRight = Quaternion.Euler(0.0f,-15.0f, 0.0f);
-				startRotationOne = Quaternion.Euler(0.0f, 45.0f, 0.0f);
-				startRotationTwo = Quaternion.Euler(0.0f,-45.0f, 0.0f);
-			}
-
-			private const int dynamicPlanesCount = 3;
-			private float timeBetweenLaunches;
-			private float timeCount;
-			private int launchesCount;
-			private int launchCounter;
-			private Quaternion lastRotation;
-			
-			public DiveStrategy(Level level) : base(level)
-			{
-				launchesCount = 5 + (int)(Random.value * 4.99f);
-				timeBetweenLaunches = 2.0f;
-				launchCounter = 0;
-				timeCount = 0;
-				lastRotation = startRotationOne;
-			}
-			public override float CalculateAllLaunchesTime()
-			{
-				return (launchesCount - 1) * timeBetweenLaunches + trackDistance / (CameraMover.instance.moveSpeed + planeSpeed);
-			}
-			public override void Start()
-			{
-				planesSystem.dynamicPlanesCount = dynamicPlanesCount;
-			}
-			public override void FixedUpdate()
-			{
-				if (level.IsLevelActive() && launchCounter < launchesCount)
-				{
-					timeCount += Time.fixedDeltaTime;
-					if (timeCount >= timeBetweenLaunches)
-					{
-						timeCount -= timeBetweenLaunches;
-						//Vector3 offset = new Vector3(0,0,0);
-						planesSystem.AddPlaneToQueue(lastRotation, Vector3.zero);
-						lastRotation *= rotateRight;
-					}
-				}
-			}
-		}
-
 		private Strategy strategy;
 
 		public PlanesLevel(bool isEmpty = false) : base(isEmpty)
 		{
+			levelType = LevelType.Planes;
 			if (!isEmpty)
 			{
 				
@@ -135,12 +85,6 @@ namespace Map
 
 		private Strategy GetRandomStrategy()
 		{
-			//if (Random.value < 0.5f)
-			//	return new WallStrategy();
-			//else
-			//	return new DiveStrategy();
-
-			//return new DiveStrategy(this);
 			return new WallStrategy(this);
 		}
 	}

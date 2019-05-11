@@ -85,10 +85,13 @@ namespace Map
 
 		public float roadOffsetByY;
 
+		private ForestBase forest;
 
-		public RoadSystem(LevelGeneratorParameters parameters)
+		public RoadSystem(LevelGeneratorParameters parameters, ForestBase forest)
 		{
 			instance = this;
+
+			this.forest = forest;
 
 			character = parameters.character;
 			roadPrefab = parameters.roadPrefab;
@@ -228,7 +231,7 @@ namespace Map
 		public void CheckGlobalCollision(Road road)
 		{
 			//Debug.Log("CheckGlobalCollision");
-			var grid = Forest.GetGrid();
+			var grid = forest.GetGrid();
 			for (int d = 0; d < grid.Length; d++)
 			{
 				for (int x = 0; x < grid[d].trees.Length; x++)

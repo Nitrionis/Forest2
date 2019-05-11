@@ -11,7 +11,7 @@ namespace Map
 		public static Transform character;
 		public static float characterSpeed;
 
-		public static Forest forest;
+		public static ForestBase forest;
 		public static RoadSystem roadSystem;
 		public static ZombieMover zombieMover;
 		public static PlanesSystem planesSystem;
@@ -25,21 +25,30 @@ namespace Map
 
 		public bool firstStartcall = true;
 
-		protected enum LevelId
+		protected enum LevelType
 		{
-			Undefined,
-			Motorway
+			Undefined	= -1,
+			Simple		= 0,
+			Speed		= 1,
+			Motorway	= 2,
+			Planes		= 3,
+			Zombies		= 4
 		}
-		protected LevelId levelId;
+		protected LevelType levelType;
 
 
 		public Level(bool isEmpty)
 		{
-			levelId = LevelId.Undefined;
+			levelType = LevelType.Undefined;
 			if (!isEmpty)
 			{
 				InitializeLevelRect();
 			}
+		}
+
+		public Level()
+		{
+			levelType = LevelType.Undefined;
 		}
 
 		public virtual void Start() { }

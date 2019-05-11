@@ -3,111 +3,12 @@ using System.Collections.Generic;
 
 namespace Map
 {
-	public class Forest
+	public class Forest : ForestBase
 	{
-		private const int treesCount = 64;
-		public class TreeObject
-		{
-			public Transform mainTransform;
-			public Transform treeTransform;
-
-			public TreeObject(Transform mainTransform)
-			{
-				this.mainTransform = mainTransform;
-				treeTransform = mainTransform.Find("RotatablePart");
-			}
-		}
-		private Stack<TreeObject> pool;
-
-		public class Tree
-		{
-			public bool isActive;
-			public int scaleIndex;
-			public int rotationIndex;
-			public Vector3 position;
-			public TreeObject treeObject;
-		}
-
-		public class TreesLine
-		{
-			public Vector3 position;
-			public Tree[] trees;
-
-			public int gridLeftIndex;
-			public int gridRightIndex;
-
-			public TreesLine(Vector3 startPosition, int width)
-			{
-				position = startPosition;
-				trees = new Tree[width];
-				gridLeftIndex = 0;
-				gridRightIndex = width - 1;
-				for (int i = 0; i < width; i++)
-				{
-					trees[i] = new Tree();
-					trees[i].isActive = true;
-				}
-			}
-		}
-
-		private static Forest instance;
-
-		public Transform character;
-		public Transform characterCamera;
-		public GameObject treePrefab;
-
-		public float treeRadius = 1;
-		public float halfFOV = 45;
-		public float treesSpacing = 10.0f;
-
-		public const int gridDepth = 12;
-		public const int gridWidth = 20;
-
-		private int startGridIndex = 0;
 		private TreesLine[] grid;
 
-		private Vector3 groundForward = Quaternion.Euler(10, 0, 0) * Vector3.forward;
-
-		private Vector3[] gradients;
-		private Vector3[] scalePresets;
-		private Quaternion[] rotationPresets;
-
-		private float[] spacingDependencyByScale;
-		//private bool skipCollision = false;
-
-		public Forest(LevelGeneratorParameters parameters)
+		public Forest(LevelGeneratorParameters parameters) : base(parameters)
 		{
-			instance = this;
-
-			character       = parameters.character;
-			characterCamera	= parameters.characterCamera;
-			treePrefab      = parameters.treePrefab;
-
-			treeRadius	 = parameters.treeRadius;
-			halfFOV		 = parameters.halfFOV;
-			treesSpacing = parameters.treesSpacing;
-
-			gradients = new Vector3[16];
-			Vector3 upAxis = Vector3.Cross(groundForward, Vector3.right);
-			for (int i = 0; i < gradients.Length; i++)
-				gradients[i] = Quaternion.AngleAxis(i * 360 / gradients.Length, upAxis) * groundForward;
-
-			scalePresets = new Vector3[4]
-			{
-				1.0f * Vector3.one,
-				0.8f * Vector3.one,
-				1.2f * Vector3.one,
-				1.4f * Vector3.one
-			};
-			spacingDependencyByScale = new float[4]
-			{
-				1.1f, 1.0f, 0.90f, 0.80f
-			};
-
-			rotationPresets = new Quaternion[8];
-			for (int i = 0; i < rotationPresets.Length; i++)
-				rotationPresets[i] = Quaternion.AngleAxis(i * 360 / rotationPresets.Length, Vector3.up);
-
 			grid = new TreesLine[gridDepth];
 			for (int i = 0; i < grid.Length; i++)
 				grid[i] = new TreesLine(parameters.startForesPposition + i * treesSpacing * groundForward, gridWidth);
@@ -140,7 +41,7 @@ namespace Map
 			}
 		}
 
-		public void Update()
+		public override void Update()
 		{
 			ForestMoveX(startGridIndex);
 			ForestMoveZ(startGridIndex);
@@ -148,19 +49,19 @@ namespace Map
 			TreesCulling();
 		}
 
-		public Vector3 GetLastGridLinePosition()
+		public override Vector3 GetLastGridLinePosition()
 		{
 			int indexOfEnd = (startGridIndex + gridDepth - 1) % gridDepth;
 			return grid[indexOfEnd].position;
 		}
 
-		private Vector3 GetRandomOffset(int scalePresetIndex)
+		protected Vector3 GetRandomOffset(int scalePresetIndex)
 		{
 			return (0.18f + 0.14f * Random.value * spacingDependencyByScale[scalePresetIndex]) 
 				* gradients[(int)(Random.value * 15.99f)] * treesSpacing;
 		}
 
-		private void ForestMoveX(int sdi)
+		protected override void ForestMoveX(int sdi)
 		{
 			Vector3 pos = grid[sdi].position;
 			float delta = pos.x - character.position.x;
@@ -179,7 +80,7 @@ namespace Map
 			}
 		}
 
-		private void MoveLeft(Vector3 pos)
+		protected override void MoveLeft(Vector3 pos)
 		{
 			float leftPos = pos.x - (treesSpacing * gridWidth / 2);
 			for (int i = 0; i < gridDepth; i++)
@@ -204,7 +105,7 @@ namespace Map
 			}
 		}
 
-		private void MoveRight(Vector3 pos)
+		protected override void MoveRight(Vector3 pos)
 		{
 			float rightPos = pos.x + (treesSpacing * gridWidth / 2);
 			for (int i = 0; i < gridDepth; i++)
@@ -225,7 +126,7 @@ namespace Map
 			}
 		}
 
-		private void ForestMoveZ(int sdi)
+		protected override void ForestMoveZ(int sdi)
 		{
 			if (character.position.z - grid[sdi].position.z > treesSpacing * 3)
 			{
@@ -252,9 +153,7 @@ namespace Map
 			}
 		}
 
-		private float[] collisionDistance = new float[4]{ 2.8f, 2.5f, 3.1f, 3.4f };
-
-		private void TreesCulling()
+		protected override void TreesCulling()
 		{
 			//float minDist = float.PositiveInfinity;
 			Vector3 forward = characterCamera.forward;
@@ -297,9 +196,9 @@ namespace Map
 			}
 		}
 
-		public static TreesLine[] GetGrid()
+		public override TreesLine[] GetGrid()
 		{
-			return instance.grid;
+			return grid;
 		}
 	}
 }

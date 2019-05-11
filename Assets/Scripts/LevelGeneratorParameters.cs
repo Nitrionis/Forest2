@@ -20,5 +20,8 @@ namespace Map
 		public float treesSpacing;
 
 		public float roadOffsetByY;
+
+		public float easyMoveSpeed;
+		public float hardMoveSpeed;
 	}
 }

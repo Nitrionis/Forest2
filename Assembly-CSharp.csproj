@@ -186,10 +186,15 @@
     <Compile Include="Assets\Scripts\Antirotation.cs" />
     <Compile Include="Assets\Scripts\CameraMover.cs" />
     <Compile Include="Assets\Scripts\CarBuilder.cs" />
+    <Compile Include="Assets\Scripts\DataSender.cs" />
     <Compile Include="Assets\Scripts\Forest.cs" />
+    <Compile Include="Assets\Scripts\ForestBase.cs" />
+    <Compile Include="Assets\Scripts\ForestStatic.cs" />
     <Compile Include="Assets\Scripts\Ground2.cs" />
     <Compile Include="Assets\Scripts\GroundController.cs" />
     <Compile Include="Assets\Scripts\LevelGeneratorParameters.cs" />
+    <Compile Include="Assets\Scripts\LevelsSystem\CustomRandom.cs" />
+    <Compile Include="Assets\Scripts\LevelsSystem\DynamicLevelGenerator.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\GameLevels\MotorwayLevel.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\GameLevels\PlanesLevel.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\GameLevels\SimpleLevel.cs" />
@@ -197,8 +202,11 @@
     <Compile Include="Assets\Scripts\LevelsSystem\GameLevels\ZombieLevel.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\Level.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\LevelGenerator.cs" />
+    <Compile Include="Assets\Scripts\LevelsSystem\LevelGeneratorBase.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\PlanesSystem.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\RoadSystem.cs" />
+    <Compile Include="Assets\Scripts\LevelsSystem\StaticLevelGenerator.cs" />
+    <Compile Include="Assets\Scripts\LevelsSystem\Trajectory.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\ZombieMover.cs" />
     <Compile Include="Assets\Scripts\ReticleChanger.cs" />
     <Compile Include="Assets\Scripts\Score.cs" />
