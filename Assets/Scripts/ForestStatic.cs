@@ -25,7 +25,6 @@ namespace Map
 
 			public int firstTreeId;
 			public float treesSpacing = 10.0f;
-			public float visibleLeft = 0, visibleRight = 0;
 
 			public StaticTreesLine(Vector3 startPosition, int width, int firstTreeId) 
 				: base(startPosition, width)
@@ -47,6 +46,11 @@ namespace Map
 			{
 				return (uint)Mathf.Round((treePosX + lineRight) / treesSpacing);
 			}
+
+			public float GetPositionXByUniqueId(uint uniqueTreeId)
+			{
+				return lineLeft + (uniqueTreeId - firstTreeId) * treesSpacing;
+			}
 		}
 		private StaticTreesLine[] grid;
 		private int lastFirstTreeId;
@@ -59,8 +63,6 @@ namespace Map
 			{
 				Vector3 startPos = parameters.startForesPposition + i * treesSpacing * groundForward;
 				grid[i] = new StaticTreesLine(startPos, gridWidth, firstTreeId);
-				grid[i].visibleLeft = startPos.x - (gridWidth / 2) * treesSpacing;
-				grid[i].visibleRight = startPos.x + (gridWidth / 2) * treesSpacing;
 
 				firstTreeId += grid[i].GetTreesCount();
 			}
@@ -112,16 +114,35 @@ namespace Map
 		{
 			uint uniqueTreeId = line.GetTreeUniqueId(tree);
 			tree.scaleIndex = (int)(3.99f * CustomRandom.Get(uniqueTreeId + 2));
+
+			CheckTreePosition(tree, uniqueTreeId);
+
+			prevPositions[uniqueTreeId] = tree.position;
+			return (0.18f + 0.14f * CustomRandom.Get(uniqueTreeId) 
+				* spacingDependencyByScale[tree.scaleIndex])
+				* gradients[(int)(15.99f * CustomRandom.Get(uniqueTreeId + 1))] * treesSpacing;
+		}
+
+		protected Vector3 GetRandomOffset(StaticTreesLine line, Tree tree, uint uniqueTreeId)
+		{
+			tree.scaleIndex = (int)(3.99f * CustomRandom.Get(uniqueTreeId + 2));
+
+			CheckTreePosition(tree, uniqueTreeId);
+
+			prevPositions[uniqueTreeId] = tree.position;
+			return (0.18f + 0.14f * CustomRandom.Get(uniqueTreeId)
+				* spacingDependencyByScale[tree.scaleIndex])
+				* gradients[(int)(15.99f * CustomRandom.Get(uniqueTreeId + 1))] * treesSpacing;
+		}
+
+		private void CheckTreePosition(Tree tree, uint uniqueTreeId)
+		{
 			if (prevPositions[uniqueTreeId].z != undefinedPosition)
 			{
 				float distance = Vector3.Distance(prevPositions[uniqueTreeId], tree.position);
 				if (distance > 0.1f)
 					Debug.Log("Error id " + uniqueTreeId + " distance " + distance + " prevPosZ " + prevPositions[uniqueTreeId].z);
 			}
-			prevPositions[uniqueTreeId] = tree.position;
-			return (0.18f + 0.14f * CustomRandom.Get(uniqueTreeId) 
-				* spacingDependencyByScale[tree.scaleIndex])
-				* gradients[(int)(15.99f * CustomRandom.Get(uniqueTreeId + 1))] * treesSpacing;
 		}
 
 		protected override void ForestMoveX(int sdi)
@@ -150,15 +171,13 @@ namespace Map
 				var treesLine = grid[i];
 				treesLine.position.x = pos.x;
 
-				treesLine.visibleLeft -= treesLine.treesSpacing;
-				treesLine.visibleRight -= treesLine.treesSpacing;
-				// TODO update this
-				float leftPos = treesLine.visibleLeft;
-				
+				uint uniqueTreeId = treesLine.GetTreeUniqueId(treesLine.trees[treesLine.gridLeftIndex]) - 1;
+				float leftPos = treesLine.GetPositionXByUniqueId(uniqueTreeId);
 
 				var tree = treesLine.trees[treesLine.gridRightIndex];
-				tree.position = new Vector3(leftPos, tree.position.y, tree.position.z);
-				tree.position += GetRandomOffset(treesLine, tree);
+				tree.position = new Vector3(leftPos, treesLine.position.y, treesLine.position.z);
+
+				tree.position += GetRandomOffset(treesLine, tree, uniqueTreeId);
 
 				if (tree.treeObject != null)
 					tree.treeObject.mainTransform.position = tree.position;
@@ -181,15 +200,13 @@ namespace Map
 				var treesLine = grid[i];
 				treesLine.position.x = pos.x;
 
-				treesLine.visibleLeft += treesLine.treesSpacing;
-				treesLine.visibleRight += treesLine.treesSpacing;
-				// TODO update this
-				float rightPos = treesLine.visibleRight;
-				// TODO
+				uint uniqueTreeId = treesLine.GetTreeUniqueId(treesLine.trees[treesLine.gridRightIndex]) + 1;
+				float rightPos = treesLine.GetPositionXByUniqueId(uniqueTreeId);
 
 				var tree = treesLine.trees[treesLine.gridLeftIndex];
-				tree.position = new Vector3(rightPos, tree.position.y, tree.position.z);
-				tree.position += GetRandomOffset(treesLine, tree);
+				tree.position = new Vector3(rightPos, treesLine.position.y, treesLine.position.z);
+
+				tree.position += GetRandomOffset(treesLine, tree, uniqueTreeId);
 
 				if (tree.treeObject != null)
 					tree.treeObject.mainTransform.position = tree.position;

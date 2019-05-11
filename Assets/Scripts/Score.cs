@@ -86,7 +86,7 @@ public class Score : MonoBehaviour
 			notСollisionTimeCounter = 0;
 			instance.hpStrips[hp - 1].SetActive(false);
 			hp = Mathf.Max(0, hp - 1);
-			if (hp == 0 && Input.GetKey(KeyCode.R))
+			if (hp == 0/* && Input.GetKey(KeyCode.R)*/)
 			{
 				int maxScore = PlayerPrefs.GetInt("recordScore", 0);
 				if (score > maxScore)
