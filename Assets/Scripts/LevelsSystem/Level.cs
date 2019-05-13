@@ -25,7 +25,7 @@ namespace Map
 
 		public bool firstStartcall = true;
 
-		protected enum LevelType
+		public enum LevelType : int
 		{
 			Undefined	= -1,
 			Simple		= 0,

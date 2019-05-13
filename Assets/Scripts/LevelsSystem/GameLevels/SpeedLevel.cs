@@ -41,7 +41,7 @@ namespace Map
 
 		public override void FixedUpdate()
 		{
-			if (levelStartEnd.y - character.position.z < 50)
+			if (levelStartEnd.y - character.position.z < 100)
 			{
 				forest.treesSpacing = defaultTreesSpacing;
 			}
@@ -65,7 +65,7 @@ namespace Map
 
 		public override void Start()
 		{
-			speed = 0;// CameraMover.instance.moveSpeed;
+			speed = CameraMover.instance.moveSpeed;
 			targetSpeed = Mathf.Lerp(easySpeed, hardSpeed, difficulty);
 			CameraMover.LockSpeed(speed);
 			speedParticleSystem.Play();
@@ -78,7 +78,5 @@ namespace Map
 			speedParticleSystem.Stop();
 			Score.scoreCoef = 1f;
 		}
-
-		//private void Change
 	}
 }

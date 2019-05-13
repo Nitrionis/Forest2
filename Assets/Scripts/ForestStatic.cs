@@ -3,6 +3,11 @@ using UnityEngine;
 
 namespace Map
 {
+	public interface ITreesSpacingController
+	{
+		float GetSpacingByUniqueTreesLineId(int uniqueLineId);
+	}
+
 	public class ForestStatic : ForestBase
 	{
 		private static Vector3[] prevPositions;
@@ -23,13 +28,15 @@ namespace Map
 			public static readonly float lineLeft = -24000.0f;
 			public static readonly float lineRight = 24000.0f;
 
+			public int uniqueLineId;
 			public int firstTreeId;
 			public float treesSpacing = 10.0f;
 
-			public StaticTreesLine(Vector3 startPosition, int width, int firstTreeId) 
+			public StaticTreesLine(Vector3 startPosition, int width, int firstTreeId, int uniqueLineId) 
 				: base(startPosition, width)
 			{
 				this.firstTreeId = firstTreeId;
+				this.uniqueLineId = uniqueLineId;
 			}
 
 			public int GetTreesCount()
@@ -55,14 +62,19 @@ namespace Map
 		private StaticTreesLine[] grid;
 		private int lastFirstTreeId;
 
-		public ForestStatic(LevelGeneratorParameters parameters) : base(parameters)
+		private ITreesSpacingController spacingController;
+
+		public ForestStatic(LevelGeneratorParameters parameters, ITreesSpacingController spacingController) 
+			: base(parameters)
 		{
+			this.spacingController = spacingController;
+
 			grid = new StaticTreesLine[gridDepth];
 			int firstTreeId = 0;
 			for (int i = 0; i < grid.Length; i++)
 			{
 				Vector3 startPos = parameters.startForesPposition + i * treesSpacing * groundForward;
-				grid[i] = new StaticTreesLine(startPos, gridWidth, firstTreeId);
+				grid[i] = new StaticTreesLine(startPos, gridWidth, firstTreeId, i);
 
 				firstTreeId += grid[i].GetTreesCount();
 			}
@@ -180,7 +192,10 @@ namespace Map
 				tree.position += GetRandomOffset(treesLine, tree, uniqueTreeId);
 
 				if (tree.treeObject != null)
-					tree.treeObject.mainTransform.position = tree.position;
+				{
+					pool.Push(tree.treeObject);
+					tree.treeObject = null;
+				}
 
 				treesLine.gridRightIndex -= 1;
 				if (treesLine.gridRightIndex < 0)
@@ -209,7 +224,10 @@ namespace Map
 				tree.position += GetRandomOffset(treesLine, tree, uniqueTreeId);
 
 				if (tree.treeObject != null)
-					tree.treeObject.mainTransform.position = tree.position;
+				{
+					pool.Push(tree.treeObject);
+					tree.treeObject = null;
+				}
 
 				treesLine.gridRightIndex = (treesLine.gridRightIndex + 1) % gridWidth;
 				treesLine.gridLeftIndex = (treesLine.gridLeftIndex + 1) % gridWidth;
@@ -220,17 +238,21 @@ namespace Map
 
 		protected override void ForestMoveZ(int sdi)
 		{
-			if (character.position.z - grid[sdi].position.z > treesSpacing * 3)
+			if (character.position.z - grid[sdi].position.z > 30)
 			{
 				var treesLine = grid[sdi];
 				treesLine.gridLeftIndex = 0;
 				treesLine.gridRightIndex = gridWidth - 1;
-				// TODO not work
+
 				lastFirstTreeId += treesLine.GetTreesCount();
 				treesLine.firstTreeId = lastFirstTreeId;
 
 				int indexOfEnd = (sdi + gridDepth - 1) % gridDepth;
-				Vector3 pos = grid[indexOfEnd].position + treesSpacing * groundForward;
+				var endTreesLine = grid[indexOfEnd];
+				treesLine.uniqueLineId = endTreesLine.uniqueLineId + 1;
+				float nextLineSpacing = spacingController.GetSpacingByUniqueTreesLineId(treesLine.uniqueLineId);
+
+				Vector3 pos = endTreesLine.position + (endTreesLine.treesSpacing + nextLineSpacing) * 0.5f * groundForward;
 				treesLine.position = pos;
 				float startTreePos = pos.x - (gridWidth / 2) * treesLine.treesSpacing;
 				uint firstTreeLocalId = treesLine.GetLocalTreeId(startTreePos);

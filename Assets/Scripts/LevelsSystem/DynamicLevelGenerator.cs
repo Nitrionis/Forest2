@@ -59,6 +59,11 @@ namespace Map
 
 		public DynamicLevelGenerator(LevelGeneratorParameters parameters) : base(parameters)
 		{
+			Level.forest = new Forest(parameters);
+			Level.roadSystem = new RoadSystem(parameters, Level.forest);
+			Level.zombieMover = new ZombieMover(parameters);
+			Level.planesSystem = new PlanesSystem(parameters);
+
 			probabilities = new LevelChance[uniqueLevelsTypesCount] {
 				new LevelChance(0.0f, 0.2f, 0.0f, 0.0f, new SimpleLevel(true),   0),
 				new LevelChance(0.2f, 0.7f, 0.0f, 0.1f, new SpeedLevel(true),    1),

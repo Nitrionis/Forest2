@@ -71,16 +71,8 @@ namespace Map
 			parameters.easyMoveSpeed = easyMoveSpeed;
 			parameters.hardMoveSpeed = hardMoveSpeed;
 
-			if (sceneMode == SceneMode.Dynamic)
-				Level.forest = new Forest(parameters);
-			else
-				Level.forest = new ForestStatic(parameters);
-			
-			Level.roadSystem = new RoadSystem(parameters, Level.forest);
-			Level.zombieMover = new ZombieMover(parameters);
-			Level.planesSystem = new PlanesSystem(parameters);
-
 			SpeedLevel.speedParticleSystem = speedParticleSystem;
+			StaticSpeedLevel.speedParticleSystem = speedParticleSystem;
 
 			if (sceneMode == SceneMode.Dynamic)
 				levelGenerator = new DynamicLevelGenerator(parameters);

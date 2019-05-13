@@ -199,12 +199,15 @@
     <Compile Include="Assets\Scripts\LevelsSystem\GameLevels\PlanesLevel.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\GameLevels\SimpleLevel.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\GameLevels\SpeedLevel.cs" />
+    <Compile Include="Assets\Scripts\LevelsSystem\GameLevels\StaticSimpleLevel.cs" />
+    <Compile Include="Assets\Scripts\LevelsSystem\GameLevels\StaticSpeedlevel.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\GameLevels\ZombieLevel.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\Level.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\LevelGenerator.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\LevelGeneratorBase.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\PlanesSystem.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\RoadSystem.cs" />
+    <Compile Include="Assets\Scripts\LevelsSystem\StaticLevel.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\StaticLevelGenerator.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\Trajectory.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\ZombieMover.cs" />
