@@ -1,6 +1,6 @@
 Android
 PlayerPath?
-D:/Programing/unity/Forest/Forest/Build/forest.aab
+C:/Users/Nitro/Desktop/app.apk
 SceneListBegin?
 Assets/Scenes/MainScene.unity
 SceneListEnd?
@@ -92,6 +92,7 @@ fc108ce7d98c40ac0907e8ca7f500c76 UnityEngine.UI.dll:UnityEngine.UI.Text
 0fd6822f6177297bd0eb4d83cc7a9030 UnityEngine.UI.dll:UnityEngine.UI.ToggleGroup
 abf1930d8126d0b2e00e9449129a0190 UnityEngine.UI.dll:UnityEngine.EventSystems.TouchInputModule
 64e54c0cbb0177c5ea26f340efb9ff85 UnityEngine.UI.dll:UnityEngine.UI.VerticalLayoutGroup
+9c349a133f50122422fe7a8fd7ecda38 Assembly-CSharp.dll:.Trajectory
 5d46189bfca968b9b26fd60c37765c3f Assembly-CSharp.dll:.GvrArmModel
 444398bc4fb783b0b448ac3c979214e1 Assembly-CSharp.dll:.GvrAudioRoom
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.СollisionСheck
@@ -166,6 +167,7 @@ ad9173d3a69d99153f38ed4b62226129 UnityEngine.Networking.dll:UnityEngine.Networki
 9b895dcabbc1faf095c000c32d471fd0 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransformChild
 5887ef1bc706b22b773d253fd443ceef UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransformVisualizer
 03a80bd821b041c0e4d42005c3a27dc7 Assembly-CSharp.dll:Gvr.Internal.InstantPreview
+ce3ffd7aa342c7b03b23098aa98f7e3d Assembly-CSharp.dll:.DataSender
 510fefd6a544e16a3ffefa557ddcba39 Unity.TextMeshPro.dll:TMPro.PackageResourceImporterWindow
 bf3913f0d6c694bf20e1d681c79a4993 Assembly-CSharp.dll:GoogleVR.HelloVR.ObjectController
 aa82b3ce4c0c9b227036c0337315c5d3 Unity.TextMeshPro.dll:TMPro.TMP_FontAsset

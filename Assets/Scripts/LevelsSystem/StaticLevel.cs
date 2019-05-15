@@ -10,28 +10,23 @@ namespace Map
 
 		public StaticLevel() : base(true) {}
 
-		public StaticLevel(float difficulty) : base()
+		public StaticLevel(float difficulty, float startPos) : base()
 		{
 			this.difficulty = difficulty;
 			treesLineSpacing = GetTreeSpacing(difficulty);
-			InitializeLevelRect();
+			treesLinesCount = GetTreesLinesCount(difficulty);
+			levelStartEnd = new Vector2(startPos, startPos + (treesLinesCount * treesLineSpacing));
 		}
 
 		public abstract int GetTreesLinesCount(float difficulty);
-
-		public override void InitializeLevelRect()
-		{
-			treesLinesCount = GetTreesLinesCount(difficulty);
-			levelStartEnd = new Vector2(
-				lastlLevel.levelStartEnd.y,
-				lastlLevel.levelStartEnd.y + (treesLinesCount * treesLineSpacing));
-		}
 
 		public virtual float GetTreeSpacing(float difficulty)
 		{
 			return 10.0f;
 		}
 
-		public abstract Level CreateNew(float difficulty);
+		public abstract Level CreateNew(float difficulty, float startPos);
+
+		public override void InitializeLevelRect() { }
 	}
 }

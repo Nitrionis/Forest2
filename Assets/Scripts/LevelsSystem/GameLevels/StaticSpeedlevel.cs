@@ -21,15 +21,17 @@ namespace Map
 
 		public StaticSpeedLevel() : base() { }
 
-		public StaticSpeedLevel(float difficulty)
-			: base(difficulty)
+		public StaticSpeedLevel(float difficulty, float startPos)
+			: base(difficulty, startPos)
 		{
 			levelType = LevelType.Speed;
+			levelStartEnd = new Vector2(startPos - 10f, startPos + (treesLinesCount * treesLineSpacing) - 60f);
+			//Debug.Log("StaticSpeedLevel " + levelStartEnd);
 		}
 
-		public override Level CreateNew(float difficulty)
+		public override Level CreateNew(float difficulty, float startPos)
 		{
-			return new StaticSpeedLevel(difficulty);
+			return new StaticSpeedLevel(difficulty, startPos);
 		}
 
 		public override Level CreateNew()

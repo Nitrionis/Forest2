@@ -5,23 +5,24 @@ namespace Map
 {
 	public class PlanesSystem
 	{
-		private static PlanesSystem instance;
-
-		private static Quaternion roteteUp;
+		protected static Quaternion rotateUp;
 
 		static PlanesSystem()
 		{
-			roteteUp = Quaternion.Euler(0.04f, 0, 0);
+			rotateUp = Quaternion.Euler(0.04f, 0, 0);
 		}
 
-		private Transform character;
-		private GameObject planePrefab;
+		protected Transform character;
+		protected GameObject planePrefab;
 
 		public class Plane
 		{
 			public readonly GameObject gameObject;
 			public readonly Transform transform;
 			public readonly Rigidbody rigidbody;
+
+			public Vector3 startPos, endPos;
+			public float startTime, endTime;
 
 			public Plane(GameObject gameObject)
 			{
@@ -31,10 +32,10 @@ namespace Map
 				gameObject.SetActive(false);
 			}
 		}
-		private const int maxPlanesCount = 5;
+		protected const int maxPlanesCount = 5;
 		public int dynamicPlanesCount;
-		private Queue<Plane> freePlanes;
-		private Queue<Plane> activePlanes;
+		protected Queue<Plane> freePlanes;
+		protected Queue<Plane> activePlanes;
 
 		public struct PlaneResp
 		{
@@ -47,11 +48,10 @@ namespace Map
 				this.positionOffset = positionOffset;
 			}
 		}
-		private Queue<PlaneResp> spawnRequests;
+		protected Queue<PlaneResp> spawnRequests;
 
 		public PlanesSystem(LevelGeneratorParameters parameters)
 		{
-			instance = this;
 			character = parameters.character;
 			planePrefab = parameters.planePrefab;
 
@@ -77,14 +77,14 @@ namespace Map
 				RespawnPlane(spawnRequests.Dequeue());
 			foreach (var p in activePlanes)
 			{
-				p.rigidbody.rotation *= roteteUp;
+				p.rigidbody.rotation *= rotateUp;
 				p.rigidbody.MovePosition(p.rigidbody.position - p.transform.forward * 16 * Time.fixedDeltaTime);
 			}
 		}
 
-		private void DeactivatePlane()
+		protected virtual void DeactivatePlane()
 		{
-			//Debug.Log("DeactivatePlane " + dynamicPlanesCount);
+			Debug.Log("DeactivatePlane " + dynamicPlanesCount);
 			var plane = activePlanes.Dequeue();
 			freePlanes.Enqueue(plane);
 		}
@@ -94,8 +94,7 @@ namespace Map
 			Debug.Log("DeactivateAllPlanes " + activePlanes.Count);
 			while (activePlanes.Count > 0)
 			{
-				var plane = activePlanes.Dequeue();
-				freePlanes.Enqueue(plane);
+				DeactivatePlane();
 			}
 		}
 		
@@ -104,7 +103,7 @@ namespace Map
 			spawnRequests.Enqueue(new PlaneResp(startRotation, offset));
 		}
 
-		private void RespawnPlane(PlaneResp planeResp)
+		protected virtual void RespawnPlane(PlaneResp planeResp)
 		{
 			//Debug.Log("RespawnPlane " + dynamicPlanesCount);
 			var plane = freePlanes.Dequeue();

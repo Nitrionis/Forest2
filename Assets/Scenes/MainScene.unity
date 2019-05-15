@@ -1112,6 +1112,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Snowboard_lo
       objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 3d045f9a34b08ee44ad9eb80cb15b575, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 3d045f9a34b08ee44ad9eb80cb15b575, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.79600024
@@ -19887,6 +19891,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc5dacc950ebae94fbdaf846ee1ca2d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serverIpAddress: 10.193.10.119
 --- !u!114 &1979808323
 MonoBehaviour:
   m_ObjectHideFlags: 0

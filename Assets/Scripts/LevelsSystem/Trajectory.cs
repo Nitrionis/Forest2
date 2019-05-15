@@ -5,9 +5,10 @@ public class Trajectory : MonoBehaviour
 {
 	private static class RecordsManager
 	{
-		public const int MaxrecordsCount = 60 * 60 * 10;
+		public const int MaxrecordsCount = 60 * 25 * 10;
 		private static int[] recordsCount;
 		private static Vector3[][] positions;
+		private static Quaternion[][] rotations;
 
 		private static int currentBufferIndex;
 
@@ -16,11 +17,11 @@ public class Trajectory : MonoBehaviour
 			currentBufferIndex = 0;
 			recordsCount = new int[] { 0, 0 };
 			positions = new Vector3[2][];
+			rotations = new Quaternion[2][];
 			for (int i = 0; i < 2; i++)
 			{
 				positions[i] = new Vector3[MaxrecordsCount];
-				for (int j = 0; j < MaxrecordsCount; j++)
-					positions[i][j] = Vector3.zero;
+				rotations[i] = new Quaternion[MaxrecordsCount];
 			}
 		}
 
@@ -43,6 +44,20 @@ public class Trajectory : MonoBehaviour
 		public static void Swap()
 		{
 			currentBufferIndex = (currentBufferIndex + 1) % 2;
+
+			int writeIndex = 1 - currentBufferIndex;
+
+			if (recordsCount[writeIndex] != 0)
+			{
+				TrajectoryStatistics statistics = new TrajectoryStatistics();
+				statistics.recordsCount = recordsCount[writeIndex];
+				statistics.positions = positions[writeIndex];
+				statistics.rotations = rotations[writeIndex];
+				StatisticsManager.Write(statistics);
+			}
+			
+			recordsCount[1 - currentBufferIndex] = StatisticsManager.Read(positions[1 - currentBufferIndex]);
+			
 			recordsCount[currentBufferIndex] = 0;
 		}
 	}

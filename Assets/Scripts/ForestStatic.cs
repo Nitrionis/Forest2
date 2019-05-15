@@ -73,8 +73,12 @@ namespace Map
 			int firstTreeId = 0;
 			for (int i = 0; i < grid.Length; i++)
 			{
-				Vector3 startPos = parameters.startForesPposition + i * treesSpacing * groundForward;
-				grid[i] = new StaticTreesLine(startPos, gridWidth, firstTreeId, i);
+				int lineId = i - gridDepth;
+				float spacing = spacingController.GetSpacingByUniqueTreesLineId(lineId);
+
+				Vector3 startPos = parameters.startForesPposition + i * spacing * groundForward;
+				grid[i] = new StaticTreesLine(startPos, gridWidth, firstTreeId, lineId);
+				grid[i].treesSpacing = spacing;
 
 				firstTreeId += grid[i].GetTreesCount();
 			}
@@ -88,12 +92,13 @@ namespace Map
 			Vector3 posForCulling = character.position + Vector3.back * 8;
 			for (int d = 0; d < grid.Length; d++)
 			{
+				var line = grid[d];
 				for (int x = 0; x < gridWidth; x++)
 				{
-					var tree = grid[d].trees[x];
+					var tree = line.trees[x];
 					tree.rotationIndex = 0;
 					tree.scaleIndex = 0;
-					tree.position = grid[d].position + (x - gridWidth / 2) * treesSpacing * Vector3.right;
+					tree.position = line.position + (x - gridWidth / 2) * line.treesSpacing * Vector3.right;
 					if ((Vector3.Angle(forward, tree.position - posForCulling) <= halfFOV)
 						&& (Vector3.Distance(tree.position, character.position) < 80)
 						&& (pool.Count > 0))
@@ -105,6 +110,7 @@ namespace Map
 						tree.treeObject = go;
 					}
 				}
+				//Debug.Log("Line spacing " + line.treesSpacing + " pos " + line.position);
 			}
 		}
 
@@ -249,10 +255,11 @@ namespace Map
 
 				int indexOfEnd = (sdi + gridDepth - 1) % gridDepth;
 				var endTreesLine = grid[indexOfEnd];
-				treesLine.uniqueLineId = endTreesLine.uniqueLineId + 1;
-				float nextLineSpacing = spacingController.GetSpacingByUniqueTreesLineId(treesLine.uniqueLineId);
 
-				Vector3 pos = endTreesLine.position + (endTreesLine.treesSpacing + nextLineSpacing) * 0.5f * groundForward;
+				treesLine.uniqueLineId = endTreesLine.uniqueLineId + 1;
+				treesLine.treesSpacing = spacingController.GetSpacingByUniqueTreesLineId(treesLine.uniqueLineId);
+
+				Vector3 pos = endTreesLine.position + (endTreesLine.treesSpacing + treesLine.treesSpacing) * 0.5f * groundForward;
 				treesLine.position = pos;
 				float startTreePos = pos.x - (gridWidth / 2) * treesLine.treesSpacing;
 				uint firstTreeLocalId = treesLine.GetLocalTreeId(startTreePos);
@@ -274,6 +281,8 @@ namespace Map
 					tree.isActive = !RoadSystem.CheckCollision(tree.position);
 				}
 				startGridIndex = (startGridIndex + 1) % gridDepth;
+
+				Debug.Log("Line spacing " + treesLine.treesSpacing + " pos " + treesLine.position);
 			}
 		}
 

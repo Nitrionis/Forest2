@@ -13,6 +13,7 @@ public class Score : MonoBehaviour
 
 	public static int score = 0;
 	public static float fscore = 0;
+	public static float timer;
 
 	public static bool isGameStarted = false;
 
@@ -41,6 +42,7 @@ public class Score : MonoBehaviour
 	void Start()
     {
 		instance = this;
+		timer = 0;
 		notСollisionTimeCounter = 0;
 		scoreObject = gameObject.GetComponent<Text>();
 		recordScoreText.text = "Best score " + PlayerPrefs.GetInt("recordScore", 0).ToString();
@@ -60,12 +62,13 @@ public class Score : MonoBehaviour
 				congratulationComment.SetActive(true);
 		}
 		isFirstPlay = false;
-    }
+	}
 	
     void Update()
     {
 		if (isGameStarted)
 		{
+			timer += Time.deltaTime;
 			fscore += Time.deltaTime * 16 * scoreCoef;
 			score = (int)fscore;
 			scoreObject.text = score.ToString();
@@ -81,7 +84,7 @@ public class Score : MonoBehaviour
 
 	public static void Сollision()
 	{
-		if (notСollisionTimeCounter > 2 && hp > 0)
+		if (/*false && */notСollisionTimeCounter > 2 && hp > 0)
 		{
 			notСollisionTimeCounter = 0;
 			instance.hpStrips[hp - 1].SetActive(false);

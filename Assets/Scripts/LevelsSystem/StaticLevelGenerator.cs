@@ -9,58 +9,87 @@ namespace Map
 
 		private const int uniqueLevelsTypesCount = 5;
 		private const int levelsCountPerMap = 1000;
-		private Queue<Level.LevelType> awaitingLevels;
+
+		private struct AwaitingLevel
+		{
+			public Level.LevelType levelType;
+			public float startPosition;
+			public AwaitingLevel(Level.LevelType levelType, float startPosition)
+			{
+				this.levelType = levelType;
+				this.startPosition = startPosition;
+			}
+		}
+		private Queue<AwaitingLevel> awaitingLevels;
 		private float[] spacings;
 
 		protected const int levelsCount = 4;
 		protected Queue<Level> levels;
 
-		private float ednOfPrevLevel = 0;
+		private float ednOfPrevLevel = -10.7f + 120f;
+
+		private int mode2 = 0;
 
 		public StaticLevelGenerator(LevelGeneratorParameters parameters) : base(parameters)
 		{
+			StaticPlanesLevel.counter = 0;
+
 			Level.forest = new ForestStatic(parameters, this);
 			Level.roadSystem = new RoadSystem(parameters, Level.forest);
 			Level.zombieMover = new ZombieMover(parameters);
-			Level.planesSystem = new PlanesSystem(parameters);
+			Level.planesSystem = new StaticPlanesSystem(parameters);
 
 			levelsKinds = new Level[5];
 			levelsKinds[0] = new StaticSimpleLevel();
 			levelsKinds[1] = new StaticSpeedLevel();
-			// TODO
 			levelsKinds[2] = new StaticSimpleLevel();
-			levelsKinds[3] = new StaticSimpleLevel();
+			// TODO
+			levelsKinds[3] = new StaticPlanesLevel();
 			levelsKinds[4] = new StaticSimpleLevel();
 
 			spacings = new float[2400];
 			for (int i = 0; i < spacings.Length; i++)
 				spacings[i] = 10f;
 
-			awaitingLevels = new Queue<Level.LevelType>(levelsCountPerMap);
+			awaitingLevels = new Queue<AwaitingLevel>(levelsCountPerMap);
 			int nextLineUniqueId = 0;
-			awaitingLevels.Enqueue(Level.LevelType.Simple);
+
+			awaitingLevels.Enqueue(new AwaitingLevel(Level.LevelType.Simple, ednOfPrevLevel));
 			AddLevelToSpacings(Level.LevelType.Simple, 0, ref nextLineUniqueId);
 
-			awaitingLevels.Enqueue(Level.LevelType.Speed);
+			awaitingLevels.Enqueue(new AwaitingLevel(Level.LevelType.Speed, ednOfPrevLevel));
 			AddLevelToSpacings(Level.LevelType.Speed, 0, ref nextLineUniqueId);
 
 			for (int i = 2; i < levelsCountPerMap; i++)
 			{
-				Level.LevelType levelType = (Level.LevelType)(uint)(3.99f * CustomRandom.Get((uint)i));
-				awaitingLevels.Enqueue(levelType);
-				if (nextLineUniqueId < spacings.Length)
-					AddLevelToSpacings(levelType, 0 /* TODO */, ref nextLineUniqueId);
+				mode2 = (mode2 + 1) % 2;
+				if (mode2 == 1)
+				{
+					awaitingLevels.Enqueue(new AwaitingLevel(Level.LevelType.Planes, ednOfPrevLevel));
+					if (nextLineUniqueId < spacings.Length)
+						AddLevelToSpacings(Level.LevelType.Planes, 0 /* TODO */, ref nextLineUniqueId);
+				}
+				else
+				{
+					awaitingLevels.Enqueue(new AwaitingLevel(Level.LevelType.Simple, ednOfPrevLevel));
+					if (nextLineUniqueId < spacings.Length)
+						AddLevelToSpacings(Level.LevelType.Simple, 0 /* TODO */, ref nextLineUniqueId);
+				}
+				//Level.LevelType levelType = (Level.LevelType)(uint)(3.99f * CustomRandom.Get((uint)i) + 1);
+				//awaitingLevels.Enqueue(new AwaitingLevel(levelType, ednOfPrevLevel));
+				//if (nextLineUniqueId < spacings.Length)
+				//	AddLevelToSpacings(levelType, 0 /* TODO */, ref nextLineUniqueId);
 			}
 
 			levels = new Queue<Level>(levelsCount);
 			Level.levels = levels;
 
 			Level.lastlLevel = new EmptyLevel();
-			levels.Enqueue(Level.lastlLevel);
 
 			for (int i = 1; i < levelsCount; i++)
 			{
-				Level.lastlLevel = new SimpleLevel();
+				AwaitingLevel awaitingLevel = awaitingLevels.Dequeue();
+				Level.lastlLevel = ((StaticLevel)levelsKinds[(int)awaitingLevel.levelType]).CreateNew(0, awaitingLevel.startPosition);
 				levels.Enqueue(Level.lastlLevel);
 			}
 		}
@@ -115,7 +144,8 @@ namespace Map
 			}
 			if (levels.Count < levelsCount)
 			{
-				Level.lastlLevel = ((StaticLevel)levelsKinds[(int)awaitingLevels.Dequeue()]).CreateNew(0);
+				AwaitingLevel awaitingLevel = awaitingLevels.Dequeue();
+				Level.lastlLevel = ((StaticLevel)levelsKinds[(int)awaitingLevel.levelType]).CreateNew(0, awaitingLevel.startPosition);
 				levels.Enqueue(Level.lastlLevel);
 			}
 		}
@@ -131,6 +161,8 @@ namespace Map
 
 		public float GetSpacingByUniqueTreesLineId(int uniqueLineId)
 		{
+			if (uniqueLineId < 0)
+				return 10f;
 			return spacings[uniqueLineId];
 		}
 	}

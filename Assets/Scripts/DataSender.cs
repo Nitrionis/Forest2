@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
-using System.Collections.Generic;
 
 public class DataSender : MonoBehaviour
 {
+	public string serverIpAddress;
+
 	void Start()
 	{
 		StartCoroutine(Upload());
@@ -12,14 +13,8 @@ public class DataSender : MonoBehaviour
 
 	private IEnumerator Upload()
 	{
-		//List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
-		//formData.Add(new MultipartFormDataSection("field1=foo&field2=bar"));
-		//formData.Add(new MultipartFormFileSection("my file data", "myfile.txt"));
-
-		//UnityWebRequest www = UnityWebRequest.Post("http://localhost:8080/", formData);
-
 		byte[] myData = System.Text.Encoding.UTF8.GetBytes("Unity space");
-		UnityWebRequest www = UnityWebRequest.Put("http://localhost:8080/", myData);
+		UnityWebRequest www = UnityWebRequest.Put("http://10.193.10.119:8080/", myData);
 		yield return www.SendWebRequest();
 
 		if (www.isNetworkError || www.isHttpError)

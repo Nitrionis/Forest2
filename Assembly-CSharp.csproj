@@ -199,8 +199,10 @@
     <Compile Include="Assets\Scripts\LevelsSystem\GameLevels\PlanesLevel.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\GameLevels\SimpleLevel.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\GameLevels\SpeedLevel.cs" />
+    <Compile Include="Assets\Scripts\LevelsSystem\GameLevels\StaticPlanesLevel.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\GameLevels\StaticSimpleLevel.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\GameLevels\StaticSpeedlevel.cs" />
+    <Compile Include="Assets\Scripts\LevelsSystem\GameLevels\StaticZombieLevels.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\GameLevels\ZombieLevel.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\Level.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\LevelGenerator.cs" />
@@ -209,11 +211,13 @@
     <Compile Include="Assets\Scripts\LevelsSystem\RoadSystem.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\StaticLevel.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\StaticLevelGenerator.cs" />
+    <Compile Include="Assets\Scripts\LevelsSystem\StaticPlanesSystem.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\Trajectory.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\ZombieMover.cs" />
     <Compile Include="Assets\Scripts\ReticleChanger.cs" />
     <Compile Include="Assets\Scripts\Score.cs" />
     <Compile Include="Assets\Scripts\SkyboxChanger.cs" />
+    <Compile Include="Assets\Scripts\StatisticsManager.cs" />
     <Compile Include="Assets\Scripts\WheelMover.cs" />
     <Compile Include="Assets\Scripts\СollisionСheck.cs" />
     <None Include="Assets\Shaders\MobsGlow.shader" />

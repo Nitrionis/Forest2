@@ -59,11 +59,11 @@ namespace Map
 		public abstract void InitializeLevelRect();
 		public abstract Level CreateNew();
 
-		public bool IsLevelActive()
+		public virtual bool IsLevelActive()
 		{
 			return character.position.z > levelStartEnd.x && character.position.z < levelStartEnd.y;
 		}
-		public bool IsLevelСompleted()
+		public virtual bool IsLevelСompleted()
 		{
 			return character.position.z > levelStartEnd.y;
 		}
