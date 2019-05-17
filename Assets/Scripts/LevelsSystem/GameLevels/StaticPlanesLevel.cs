@@ -46,9 +46,9 @@ namespace Map
 		public override int GetTreesLinesCount(float difficulty)
 		{
 			int wavesCount = 3;
-			float halfCharacterSpeed = Mathf.Lerp(10, 20, difficulty);
-			float allLaunchesTime = trackDistance * wavesCount / (halfCharacterSpeed + planeSpeed);
-			float levelDistance = allLaunchesTime * (halfCharacterSpeed * 2 + 2);
+			float characterSpeed = Mathf.Lerp(10, 20, difficulty);
+			float allLaunchesTime = trackDistance * wavesCount / (characterSpeed + planeSpeed);
+			float levelDistance = allLaunchesTime * (characterSpeed + 2);
 			return Mathf.CeilToInt(levelDistance / GetTreeSpacing(difficulty));
 		}
 

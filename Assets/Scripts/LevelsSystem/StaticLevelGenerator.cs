@@ -35,17 +35,16 @@ namespace Map
 			StaticPlanesLevel.counter = 0;
 
 			Level.forest = new ForestStatic(parameters, this);
-			Level.roadSystem = new RoadSystem(parameters, Level.forest);
-			Level.zombieMover = new ZombieMover(parameters);
+			Level.roadSystem = new StaticRoadSystem(parameters, Level.forest);
+			Level.zombieMover = new StaticZombieMover(parameters);
 			Level.planesSystem = new StaticPlanesSystem(parameters);
 
 			levelsKinds = new Level[5];
 			levelsKinds[0] = new StaticSimpleLevel();
 			levelsKinds[1] = new StaticSpeedLevel();
-			levelsKinds[2] = new StaticSimpleLevel();
-			// TODO
+			levelsKinds[2] = new StaticMotorwayLevel();
 			levelsKinds[3] = new StaticPlanesLevel();
-			levelsKinds[4] = new StaticSimpleLevel();
+			levelsKinds[4] = new StaticZombieLevels();
 
 			spacings = new float[2400];
 			for (int i = 0; i < spacings.Length; i++)
@@ -62,23 +61,26 @@ namespace Map
 
 			for (int i = 2; i < levelsCountPerMap; i++)
 			{
-				mode2 = (mode2 + 1) % 2;
-				if (mode2 == 1)
-				{
-					awaitingLevels.Enqueue(new AwaitingLevel(Level.LevelType.Planes, ednOfPrevLevel));
-					if (nextLineUniqueId < spacings.Length)
-						AddLevelToSpacings(Level.LevelType.Planes, 0 /* TODO */, ref nextLineUniqueId);
-				}
-				else
-				{
-					awaitingLevels.Enqueue(new AwaitingLevel(Level.LevelType.Simple, ednOfPrevLevel));
-					if (nextLineUniqueId < spacings.Length)
-						AddLevelToSpacings(Level.LevelType.Simple, 0 /* TODO */, ref nextLineUniqueId);
-				}
-				//Level.LevelType levelType = (Level.LevelType)(uint)(3.99f * CustomRandom.Get((uint)i) + 1);
-				//awaitingLevels.Enqueue(new AwaitingLevel(levelType, ednOfPrevLevel));
-				//if (nextLineUniqueId < spacings.Length)
-				//	AddLevelToSpacings(levelType, 0 /* TODO */, ref nextLineUniqueId);
+				//mode2 = (mode2 + 1) % 2;
+				//if (mode2 == 1)
+				//{
+				//	awaitingLevels.Enqueue(new AwaitingLevel(Level.LevelType.Planes, ednOfPrevLevel));
+				//	if (nextLineUniqueId < spacings.Length)
+				//		AddLevelToSpacings(Level.LevelType.Planes, 0 /* TODO */, ref nextLineUniqueId);
+				//}
+				//else
+				//{
+				//	awaitingLevels.Enqueue(new AwaitingLevel(Level.LevelType.Zombies, ednOfPrevLevel));
+				//	if (nextLineUniqueId < spacings.Length)
+				//		AddLevelToSpacings(Level.LevelType.Zombies, 0 /* TODO */, ref nextLineUniqueId);
+				//}
+				Level.LevelType levelType = (Level.LevelType)(uint)(3.99f * CustomRandom.Get((uint)i) + 1);
+
+				//Debug.Log("\nLevelType " + (levelType).ToString());
+
+				awaitingLevels.Enqueue(new AwaitingLevel(levelType, ednOfPrevLevel));
+				if (nextLineUniqueId < spacings.Length)
+					AddLevelToSpacings(levelType, 0 /* TODO */, ref nextLineUniqueId);
 			}
 
 			levels = new Queue<Level>(levelsCount);

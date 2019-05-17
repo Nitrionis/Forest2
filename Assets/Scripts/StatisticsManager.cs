@@ -32,12 +32,14 @@ public class StatisticsManager
 
 	private static readonly string path = "/data/Statistics";
 	private static readonly Queue<EnemyMoveInfo> planesInfo;
-	//private static readonly Queue<EnemyMoveInfo> zombiesInfo;
-	//private static readonly Queue<EnemyMoveInfo> carsInfo;
+	private static readonly Queue<EnemyMoveInfo> zombiesInfo;
+	private static readonly Queue<EnemyMoveInfo> carsInfo;
 
 	static StatisticsManager()
 	{
-		planesInfo = new Queue<EnemyMoveInfo>(1000);
+		planesInfo = new Queue<EnemyMoveInfo>(200);
+		zombiesInfo = new Queue<EnemyMoveInfo>(200);
+		carsInfo = new Queue<EnemyMoveInfo>(200);
 	}
 
 	public static void Write(TrajectoryStatistics trajectory)
@@ -62,11 +64,19 @@ public class StatisticsManager
 				WriteQuaternion(writer, trajectory.rotations[i]);
 
 			Debug.Log("planesInfo.Count " + planesInfo.Count);
-
 			writer.Write(planesInfo.Count);
 			while (planesInfo.Count > 0)
 				WriteEnemyMoveInfo(writer, planesInfo.Dequeue());
-			
+
+			Debug.Log("zombiesInfo.Count " + zombiesInfo.Count);
+			writer.Write(zombiesInfo.Count);
+			while (zombiesInfo.Count > 0)
+				WriteEnemyMoveInfo(writer, zombiesInfo.Dequeue());
+
+			Debug.Log("carsInfo.Count " + carsInfo.Count);
+			writer.Write(carsInfo.Count);
+			while (carsInfo.Count > 0)
+				WriteEnemyMoveInfo(writer, carsInfo.Dequeue());
 		}
 	}
 
@@ -118,6 +128,22 @@ public class StatisticsManager
 
 	public static void PushPlaneInfo(EnemyMoveInfo plane)
 	{
+		Debug.Log("PushPlaneInfo start time " + plane.startTime + " end time " + plane.endTime);
 		planesInfo.Enqueue(plane);
+	}
+
+	public static void PushZombieInfo(EnemyMoveInfo zombie)
+	{
+		Debug.Log("PushZombieInfo start time " + zombie.startTime + " end time " + zombie.endTime);
+		zombiesInfo.Enqueue(zombie);
+	}
+
+	public static void PushCarInfo(EnemyMoveInfo car)
+	{
+		Vector3 camPos = Camera.main.transform.position;
+		Debug.Log("\nPushCarInfo\n start time " + car.startTime + " end time " + car.endTime
+			+ "\n start pos " + car.startPos + " end pos " + car.endPos + "\n camera " + camPos
+			+ "\n dist 1 " + Vector3.Distance(car.startPos, camPos) + " dist 2 " + Vector3.Distance(car.startPos, camPos));
+		carsInfo.Enqueue(car);
 	}
 }

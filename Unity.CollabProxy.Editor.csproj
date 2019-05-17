@@ -305,6 +305,9 @@
     <Reference Include="UnityEditor.Purchasing">
       <HintPath>D:/Programing/unity/Forest/Forest/Library/PackageCache/com.unity.purchasing@2.0.3/Editor/UnityEditor.Purchasing.dll</HintPath>
     </Reference>
+    <Reference Include="Valve.Newtonsoft.Json">
+      <HintPath>Assets/SteamVR/Input/Plugins/JSON.NET/Valve.Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:\Program Files\Unity\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api\mscorlib.dll</HintPath>
     </Reference>
@@ -369,9 +372,7 @@
     <None Include="Assets\GoogleVR\Shaders\GvrUnlitTransparentOverlay.shader" />
     <None Include="Assets\GoogleVR\Shaders\GvrUnlitTransparentOverlayColor.shader" />
     <None Include="Assets\GoogleVR\Shaders\Video\VideoUnlitShader.shader" />
-    <None Include="Assets\Mobs\NewMob1\NewUnlitShader.shader" />
-    <None Include="Assets\Mobs\Toon Zombie S\TSF\Shaders\TSF.shader" />
-    <None Include="Assets\Mobs\Toon Zombie S\TSF\Shaders\TSFOutline.shader" />
+    <None Include="Assets\Shaders\Avalanche.shader" />
     <None Include="Assets\Shaders\BulletGlow.shader" />
     <None Include="Assets\Shaders\Glow.shader" />
     <None Include="Assets\Shaders\Ground.shader" />
@@ -384,9 +385,23 @@
     <None Include="Assets\Shaders\Road.shader" />
     <None Include="Assets\Shaders\Skybox.shader" />
     <None Include="Assets\Shaders\Texture.shader" />
+    <None Include="Assets\Shaders\TransparetColor.shader" />
     <None Include="Assets\Shaders\Trees.shader" />
     <None Include="Assets\Shaders\Wheel.shader" />
     <None Include="Assets\Shaders\WheelMain.shader" />
+    <None Include="Assets\SteamVR\InteractionSystem\Core\Shaders\SeeThru.shader" />
+    <None Include="Assets\SteamVR\InteractionSystem\Core\Shaders\Silhouette.shader" />
+    <None Include="Assets\SteamVR\InteractionSystem\Hints\Shaders\ControllerButtonHints.shader" />
+    <None Include="Assets\SteamVR\InteractionSystem\Samples\BuggyBuddy\Materials\LightCone.shader" />
+    <None Include="Assets\SteamVR\InteractionSystem\Samples\Squishy\SquishyDeform.shader" />
+    <None Include="Assets\SteamVR\InteractionSystem\Teleport\Shaders\HighlighGlobal.shader" />
+    <None Include="Assets\SteamVR\InteractionSystem\Teleport\Shaders\Highlight.shader" />
+    <None Include="Assets\SteamVR\Resources\SteamVR_AlphaOut.shader" />
+    <None Include="Assets\SteamVR\Resources\SteamVR_ClearAll.shader" />
+    <None Include="Assets\SteamVR\Resources\SteamVR_ColorOut.shader" />
+    <None Include="Assets\SteamVR\Resources\SteamVR_Fade.shader" />
+    <None Include="Assets\SteamVR\Resources\SteamVR_SphericalProjection.shader" />
+    <None Include="Assets\SteamVR\readme.txt" />
     <None Include="Packages\com.unity.collab-proxy\Editor\Resources\Styles\CollabHistoryCommon.uss" />
     <None Include="Packages\com.unity.collab-proxy\Editor\Resources\Styles\CollabHistoryDark.uss" />
     <None Include="Packages\com.unity.collab-proxy\Editor\Resources\Styles\CollabHistoryLight.uss" />

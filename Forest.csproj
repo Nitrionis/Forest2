@@ -263,6 +263,9 @@
     <Reference Include="Unity.Analytics.Tracker">
       <HintPath>D:/Programing/unity/Forest/Forest/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Tracker.dll</HintPath>
     </Reference>
+    <Reference Include="Valve.Newtonsoft.Json">
+      <HintPath>Assets/SteamVR/Input/Plugins/JSON.NET/Valve.Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:\Program Files\Unity\Editor\Data\MonoBleedingEdge\lib\mono\unity\mscorlib.dll</HintPath>
     </Reference>
@@ -311,6 +314,22 @@
     <ProjectReference Include="Unity.Analytics.DataPrivacy.csproj">
       <Project>{D6E266C6-3D1F-28C8-9FEB-2A01E44DBF77}</Project>
       <Name>Unity.Analytics.DataPrivacy</Name>
+    </ProjectReference>
+    <ProjectReference Include="SteamVR_Input_Editor.csproj">
+      <Project>{E6594F2C-2DC5-CB04-5892-01F5D49638B7}</Project>
+      <Name>SteamVR_Input_Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="SteamVR_Editor.csproj">
+      <Project>{82811FCA-78A2-ED65-B77C-CE2E64CFF895}</Project>
+      <Name>SteamVR_Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="SteamVR.csproj">
+      <Project>{BD231772-1CCA-A142-B2A7-FFDEBC0B66EE}</Project>
+      <Name>SteamVR</Name>
+    </ProjectReference>
+    <ProjectReference Include="SteamVR_Windows_EditorHelper.csproj">
+      <Project>{58A108A4-18E9-33FA-75FB-B906B95B871B}</Project>
+      <Name>SteamVR_Windows_EditorHelper</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -439,20 +458,43 @@
     <Compile Include="Assets\Scripts\Antirotation.cs" />
     <Compile Include="Assets\Scripts\CameraMover.cs" />
     <Compile Include="Assets\Scripts\CarBuilder.cs" />
+    <Compile Include="Assets\Scripts\DataSender.cs" />
+    <Compile Include="Assets\Scripts\Forest.cs" />
+    <Compile Include="Assets\Scripts\ForestBase.cs" />
+    <Compile Include="Assets\Scripts\ForestStatic.cs" />
     <Compile Include="Assets\Scripts\Ground2.cs" />
     <Compile Include="Assets\Scripts\GroundController.cs" />
     <Compile Include="Assets\Scripts\LevelGeneratorParameters.cs" />
-    <Compile Include="Assets\Scripts\LevelsSystem\Forest.cs" />
+    <Compile Include="Assets\Scripts\LevelsSystem\CustomRandom.cs" />
+    <Compile Include="Assets\Scripts\LevelsSystem\DynamicLevelGenerator.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\GameLevels\MotorwayLevel.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\GameLevels\PlanesLevel.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\GameLevels\SimpleLevel.cs" />
+    <Compile Include="Assets\Scripts\LevelsSystem\GameLevels\SpeedLevel.cs" />
+    <Compile Include="Assets\Scripts\LevelsSystem\GameLevels\StaticMotorwayLevel.cs" />
+    <Compile Include="Assets\Scripts\LevelsSystem\GameLevels\StaticPlanesLevel.cs" />
+    <Compile Include="Assets\Scripts\LevelsSystem\GameLevels\StaticSimpleLevel.cs" />
+    <Compile Include="Assets\Scripts\LevelsSystem\GameLevels\StaticSpeedlevel.cs" />
+    <Compile Include="Assets\Scripts\LevelsSystem\GameLevels\StaticZombieLevels.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\GameLevels\ZombieLevel.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\Level.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\LevelGenerator.cs" />
+    <Compile Include="Assets\Scripts\LevelsSystem\LevelGeneratorBase.cs" />
+    <Compile Include="Assets\Scripts\LevelsSystem\PlanesSystem.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\RoadSystem.cs" />
+    <Compile Include="Assets\Scripts\LevelsSystem\StaticLevel.cs" />
+    <Compile Include="Assets\Scripts\LevelsSystem\StaticLevelGenerator.cs" />
+    <Compile Include="Assets\Scripts\LevelsSystem\StaticPlanesSystem.cs" />
+    <Compile Include="Assets\Scripts\LevelsSystem\StaticRoadSystem.cs" />
+    <Compile Include="Assets\Scripts\LevelsSystem\StaticZombieMover.cs" />
+    <Compile Include="Assets\Scripts\LevelsSystem\Trajectory.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\ZombieMover.cs" />
+    <Compile Include="Assets\Scripts\ReticleChanger.cs" />
+    <Compile Include="Assets\Scripts\Score.cs" />
     <Compile Include="Assets\Scripts\SkyboxChanger.cs" />
+    <Compile Include="Assets\Scripts\StatisticsManager.cs" />
     <Compile Include="Assets\Scripts\WheelMover.cs" />
+    <Compile Include="Assets\Scripts\СollisionСheck.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Cars\car_v1\Materials\Skybox Cubemap Extended\Shaders\Skybox Cubemap Extended.shader" />
@@ -471,9 +513,7 @@
     <None Include="Assets\GoogleVR\Shaders\GvrUnlitTransparentOverlay.shader" />
     <None Include="Assets\GoogleVR\Shaders\GvrUnlitTransparentOverlayColor.shader" />
     <None Include="Assets\GoogleVR\Shaders\Video\VideoUnlitShader.shader" />
-    <None Include="Assets\Mobs\NewMob1\NewUnlitShader.shader" />
-    <None Include="Assets\Mobs\Toon Zombie S\TSF\Shaders\TSF.shader" />
-    <None Include="Assets\Mobs\Toon Zombie S\TSF\Shaders\TSFOutline.shader" />
+    <None Include="Assets\Shaders\Avalanche.shader" />
     <None Include="Assets\Shaders\BulletGlow.shader" />
     <None Include="Assets\Shaders\Glow.shader" />
     <None Include="Assets\Shaders\Ground.shader" />
@@ -486,9 +526,23 @@
     <None Include="Assets\Shaders\Road.shader" />
     <None Include="Assets\Shaders\Skybox.shader" />
     <None Include="Assets\Shaders\Texture.shader" />
+    <None Include="Assets\Shaders\TransparetColor.shader" />
     <None Include="Assets\Shaders\Trees.shader" />
     <None Include="Assets\Shaders\Wheel.shader" />
     <None Include="Assets\Shaders\WheelMain.shader" />
+    <None Include="Assets\SteamVR\InteractionSystem\Core\Shaders\SeeThru.shader" />
+    <None Include="Assets\SteamVR\InteractionSystem\Core\Shaders\Silhouette.shader" />
+    <None Include="Assets\SteamVR\InteractionSystem\Hints\Shaders\ControllerButtonHints.shader" />
+    <None Include="Assets\SteamVR\InteractionSystem\Samples\BuggyBuddy\Materials\LightCone.shader" />
+    <None Include="Assets\SteamVR\InteractionSystem\Samples\Squishy\SquishyDeform.shader" />
+    <None Include="Assets\SteamVR\InteractionSystem\Teleport\Shaders\HighlighGlobal.shader" />
+    <None Include="Assets\SteamVR\InteractionSystem\Teleport\Shaders\Highlight.shader" />
+    <None Include="Assets\SteamVR\Resources\SteamVR_AlphaOut.shader" />
+    <None Include="Assets\SteamVR\Resources\SteamVR_ClearAll.shader" />
+    <None Include="Assets\SteamVR\Resources\SteamVR_ColorOut.shader" />
+    <None Include="Assets\SteamVR\Resources\SteamVR_Fade.shader" />
+    <None Include="Assets\SteamVR\Resources\SteamVR_SphericalProjection.shader" />
+    <None Include="Assets\SteamVR\readme.txt" />
     <None Include="Packages\com.unity.collab-proxy\Editor\Resources\Styles\CollabHistoryCommon.uss" />
     <None Include="Packages\com.unity.collab-proxy\Editor\Resources\Styles\CollabHistoryDark.uss" />
     <None Include="Packages\com.unity.collab-proxy\Editor\Resources\Styles\CollabHistoryLight.uss" />

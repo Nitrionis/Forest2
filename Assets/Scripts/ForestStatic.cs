@@ -20,7 +20,7 @@ namespace Map
 			var value = new Vector3(0,0, undefinedPosition);
 			for (int i = 0; i < prevPositions.Length; i++)
 				prevPositions[i] = value;
-			Debug.Log("static ForestStatic()");
+			//Debug.Log("static ForestStatic()");
 		}
 
 		public class StaticTreesLine : TreesLine
@@ -282,7 +282,7 @@ namespace Map
 				}
 				startGridIndex = (startGridIndex + 1) % gridDepth;
 
-				Debug.Log("Line spacing " + treesLine.treesSpacing + " pos " + treesLine.position);
+				//Debug.Log("Line spacing " + treesLine.treesSpacing + " pos " + treesLine.position);
 			}
 		}
 

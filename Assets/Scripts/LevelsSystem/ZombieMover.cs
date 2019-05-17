@@ -4,22 +4,25 @@ namespace Map
 {
 	public class ZombieMover
 	{
-		private bool prevActiveState = false;
+		protected bool prevActiveState = false;
 		public bool isSpawnActive = false;
 		public bool isMoveActive = false;
 
-		private struct Zombie
+		protected struct Zombie
 		{
 			public GameObject gameObject;
 			public Renderer renderer;
 			public Rigidbody rigidbody;
+
+			public Vector3 startPos, endPos;
+			public float startTime, endTime;
 		}
 
-		private Transform character;
-		private GameObject zombie;
+		protected Transform character;
+		protected GameObject zombie;
 
-		private const int maxMobsCount = 8;
-		private Zombie[] mobs;
+		protected const int maxMobsCount = 8;
+		protected Zombie[] mobs;
 
 		public Vector2 zombieCreationAngleRange = new Vector2(-30, 30);
 
@@ -37,7 +40,7 @@ namespace Map
 			}
 		}
 
-		public void FixedUpdate()
+		public virtual void FixedUpdate()
 		{
 			if (isMoveActive)
 			{
@@ -49,7 +52,8 @@ namespace Map
 				}
 				for (int i = 0; i < maxMobsCount; i++)
 				{
-					Vector3 pos = mobs[i].gameObject.transform.position;
+					var rb = mobs[i].rigidbody;
+					Vector3 pos = rb.position;
 					CameraMover c = CameraMover.instance;
 					Vector3 newPos = pos;
 					if (isSpawnActive && (pos.z < character.position.z || pos.y < character.position.y - 100))
@@ -59,14 +63,18 @@ namespace Map
 								zombieCreationAngleRange.y),
 							c.upAxis) * c.moveDir;
 						newPos = character.position + offset * 54;
-						mobs[i].rigidbody.velocity = Vector3.zero;
-						mobs[i].rigidbody.rotation = Quaternion.identity;
+						rb.position = newPos;
+						rb.velocity = Vector3.zero;
+						rb.rotation = Quaternion.identity;
 					}
-					Vector3 moveDir = -(newPos - character.position);
-					moveDir.y = 0;
-					moveDir.Normalize();
-					mobs[i].rigidbody.MovePosition(newPos + 5 * Time.fixedDeltaTime * moveDir);
-					mobs[i].rigidbody.MoveRotation(Quaternion.LookRotation(moveDir, Vector3.up));
+					else
+					{
+						Vector3 moveDir = -(newPos - character.position);
+						moveDir.y = 0;
+						moveDir.Normalize();
+						rb.MovePosition(newPos + 5 * Time.fixedDeltaTime * moveDir);
+						rb.MoveRotation(Quaternion.LookRotation(moveDir, Vector3.up));
+					}
 				}
 			}
 			else if (!isMoveActive && prevActiveState)
