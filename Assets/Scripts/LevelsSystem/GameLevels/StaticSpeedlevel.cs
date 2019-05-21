@@ -6,10 +6,10 @@ namespace Map
 	{
 		public static ParticleSystem speedParticleSystem;
 		private const float easySpeed = 25;
-		private const float hardSpeed = 40;
+		private const float hardSpeed = 35;
 
 		private const float easyTreesSpacing = 16;
-		private const float hardTreesSpacing = 11;
+		private const float hardTreesSpacing = 16;
 
 		private const int easyLinesCount = 40;
 		private const int hardLinesCount = 30;

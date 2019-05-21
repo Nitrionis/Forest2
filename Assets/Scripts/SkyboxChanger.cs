@@ -50,12 +50,12 @@ public class SkyboxChanger : MonoBehaviour
 			if (t <= 1)
 			{
 				light.intensity = Mathf.Lerp(1.08f, 0.2f, t);
-				RenderSettings.fogColor = Color.Lerp(fogDayColor, fogEveningColor, t);
+				RenderSettings.fogColor = Color.Lerp(RenderSettings.fogColor, fogEveningColor, t);
 			}
 			else if (t <= 2)
 			{
 				t -= 1;
-				RenderSettings.fogColor = Color.Lerp(fogEveningColor, targetNightColor, t);
+				RenderSettings.fogColor = Color.Lerp(RenderSettings.fogColor, targetNightColor, t);
 				RenderSettings.fogEndDistance = Mathf.Lerp(fogDayDistance, fogNightDistance, t);
 			}
 			else state = 0;
@@ -64,14 +64,14 @@ public class SkyboxChanger : MonoBehaviour
 		{
 			if (t <= 1)
 			{
-				RenderSettings.fogColor = Color.Lerp(targetNightColor, fogEveningColor, t);
+				RenderSettings.fogColor = Color.Lerp(RenderSettings.fogColor, fogEveningColor, t);
 				RenderSettings.fogEndDistance = Mathf.Lerp(fogNightDistance, fogDayDistance, t);
 			}
 			else if (t <= 2)
 			{
 				t -= 1;
 				light.intensity = Mathf.Lerp(0.2f, 1.08f, t);
-				RenderSettings.fogColor = Color.Lerp(fogEveningColor, fogDayColor, t);
+				RenderSettings.fogColor = Color.Lerp(RenderSettings.fogColor, fogDayColor, t);
 			}
 			else state = 0;
 		}

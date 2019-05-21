@@ -28,7 +28,7 @@ namespace Map
 					tree.scaleIndex = 0;
 					tree.position = grid[d].position + (x - gridWidth / 2) * treesSpacing * Vector3.right;
 					if ((Vector3.Angle(forward, tree.position - posForCulling) <= halfFOV)
-						&& (Vector3.Distance(tree.position, character.position) < 80)
+						&& (Vector3.Distance(tree.position, character.position) < 55)
 						&& (pool.Count > 0))
 					{
 						var go = pool.Pop();

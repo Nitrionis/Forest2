@@ -4,6 +4,8 @@ namespace Map
 {
 	public class LevelGenerator : MonoBehaviour
 	{
+		public static LevelGenerator instance;
+
 		public enum SceneMode
 		{
 			Static,
@@ -45,6 +47,8 @@ namespace Map
 
 		void Start()
 		{
+			instance = this;
+
 			Level.difficulty = 0.0f;
 			Level.character = character;
 			Level.characterSpeed = 10.0f;

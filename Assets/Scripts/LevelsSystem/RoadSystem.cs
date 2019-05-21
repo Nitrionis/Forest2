@@ -35,6 +35,8 @@ namespace Map
 			public Vector3 center;
 			public RoadObject roadObject;
 
+			public Vector3 lastCarStartPos;
+
 			public class Car
 			{
 				public Rigidbody rigidbody;
@@ -201,7 +203,7 @@ namespace Map
 					{
 						unusedCars.Enqueue(car);
 						r.cars.RemoveAt(i);
-						Debug.Log("Destroy state" + state);
+						//Debug.Log("Destroy state" + state);
 						DestroyCar(car, rb.position);
 					}
 					else
@@ -215,15 +217,26 @@ namespace Map
 				{
 					Road.Car car = unusedCars.Dequeue();
 					Rigidbody rb = car.rigidbody;
-					float xOffset = r.carsSpeed < 0 ? 50 : -50;
+
+					float speedSign = Mathf.Sign(r.carsSpeed);
+					float xOffset = speedSign * -50;
 					Vector3 carPos = new Vector3(character.position.x + xOffset, r.center.y, r.center.z);
+
 					float carSpacing = 10 + 10 * Level.difficulty;
-					if (r.cars.Count > 0 && Vector3.Distance(carPos, r.cars[r.cars.Count - 1].rigidbody.position) < carSpacing)
-						carPos = r.cars[r.cars.Count - 1].rigidbody.position + Mathf.Sign(-xOffset) * carSpacing * Vector3.left;
+
+					//if (r.cars.Count > 0 && Vector3.Distance(carPos, r.cars[r.cars.Count - 1].rigidbody.position) < carSpacing)
+					//	carPos = r.cars[r.cars.Count - 1].rigidbody.position + Mathf.Sign(xOffset) * carSpacing * Vector3.left;
+
+					if (r.cars.Count > 0 && (
+						Mathf.Abs(carPos.x - r.lastCarStartPos.x) < carSpacing 
+						|| speedSign * (r.lastCarStartPos.x - carPos.x) < 0))
+						carPos = r.lastCarStartPos + speedSign * carSpacing * Vector3.left;
+
 					rb.position = carPos;
 					rb.rotation = r.carsSpeed < 0 ? inversCarRotation : carPrefab.transform.rotation;
 					rb.velocity = Vector3.zero;
 					r.cars.Add(car);
+					r.lastCarStartPos = carPos;
 					SpawnCar(car, carPos);
 				}
 			}

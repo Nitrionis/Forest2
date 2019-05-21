@@ -26,6 +26,8 @@ namespace Map
 			public int rotationIndex;
 			public Vector3 position;
 			public TreeObject treeObject;
+			//public GameObject debugObject;
+			//public Material debugMaterial;
 		}
 
 		public class TreesLine
@@ -46,6 +48,9 @@ namespace Map
 				{
 					trees[i] = new Tree();
 					trees[i].isActive = true;
+
+					//trees[i].debugObject = GameObject.Instantiate(TreeDebug.treeDebugObject, startPosition, Quaternion.identity);
+					//trees[i].debugMaterial = trees[i].debugObject.GetComponent<Renderer>().material;
 				}
 			}
 		}

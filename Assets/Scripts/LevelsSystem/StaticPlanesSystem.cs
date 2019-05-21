@@ -11,7 +11,7 @@ namespace Map
 
 		protected override void DeactivatePlane()
 		{
-			Debug.Log("override void DeactivatePlane()");
+			//Debug.Log("override void DeactivatePlane()");
 			var plane = activePlanes.Peek();
 			plane.endPos = plane.rigidbody.position;
 			plane.endTime = Score.timer;

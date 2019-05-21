@@ -9,15 +9,33 @@ public class TrajectoryStatistics
 	public Quaternion[] rotations;
 }
 
-/*  int32 trajectory records count
+/*  int trajectory records count
 	Vector3[trajectory records count] positions
 	Quaternion[trajectory records count] rotations
-	int32 planes records count
-	EnemyMoveInfo [planes records count] planesMovement
+	int planes records count
+	EnemyMoveInfo[planes records count] planesMovement
+	int zombies records count
+	EnemyMoveInfo[zombies records count] zombiesMovement
+	int cars records count
+	EnemyMoveInfo[cars records count] carsMovement
+	int collision records count
+	СollisionInfo[collision records count] collisionRecords
  */
 
 public class StatisticsManager
 {
+	private class СollisionInfo
+	{
+		public Vector3 pos;
+		public float time;
+
+		public СollisionInfo(Vector3 pos, float time)
+		{
+			this.pos = pos;
+			this.time = time;
+		}
+	}
+
 	public class EnemyMoveInfo
 	{
 		public Vector3 startPos, endPos;
@@ -34,12 +52,14 @@ public class StatisticsManager
 	private static readonly Queue<EnemyMoveInfo> planesInfo;
 	private static readonly Queue<EnemyMoveInfo> zombiesInfo;
 	private static readonly Queue<EnemyMoveInfo> carsInfo;
+	private static readonly Queue<СollisionInfo> collisionRecords;
 
 	static StatisticsManager()
 	{
 		planesInfo = new Queue<EnemyMoveInfo>(200);
 		zombiesInfo = new Queue<EnemyMoveInfo>(200);
 		carsInfo = new Queue<EnemyMoveInfo>(200);
+		collisionRecords = new Queue<СollisionInfo>(100);
 	}
 
 	public static void Write(TrajectoryStatistics trajectory)
@@ -77,6 +97,14 @@ public class StatisticsManager
 			writer.Write(carsInfo.Count);
 			while (carsInfo.Count > 0)
 				WriteEnemyMoveInfo(writer, carsInfo.Dequeue());
+
+			writer.Write(collisionRecords.Count);
+			while (carsInfo.Count > 0)
+			{
+				var info = collisionRecords.Dequeue();
+				WriteVector3(writer, info.pos);
+				writer.Write(info.time);
+			}
 		}
 	}
 
@@ -85,16 +113,20 @@ public class StatisticsManager
 		int uniqueFileId = PlayerPrefs.GetInt("uniqueStatisticsId", 0);
 		string fileName = Application.persistentDataPath + path + uniqueFileId.ToString();
 		int recordsCount = 0;
+		//string msg = "Read Trajectory\n";
 		if (File.Exists(fileName))
 		{
 			using (BinaryReader reader = new BinaryReader(File.Open(fileName, FileMode.Open)))
 			{
 				recordsCount = reader.ReadInt32();
 				for (int i = 0; i < recordsCount; i++)
+				{
 					data[i] = ReadVector3(reader);
+					//msg += "i=" + i + " pos=" + data[i] + "\n";
+				}
 			}
 		}
-		Debug.Log("Read recordsCount " + recordsCount);
+		//Debug.Log(msg);
 		return recordsCount;
 	}
 
@@ -128,22 +160,27 @@ public class StatisticsManager
 
 	public static void PushPlaneInfo(EnemyMoveInfo plane)
 	{
-		Debug.Log("PushPlaneInfo start time " + plane.startTime + " end time " + plane.endTime);
+		//Debug.Log("PushPlaneInfo\nstart time " + plane.startTime + " end time " + plane.endTime);
 		planesInfo.Enqueue(plane);
 	}
 
 	public static void PushZombieInfo(EnemyMoveInfo zombie)
 	{
-		Debug.Log("PushZombieInfo start time " + zombie.startTime + " end time " + zombie.endTime);
+		//Debug.Log("PushZombieInfo\nstart time " + zombie.startTime + " end time " + zombie.endTime);
 		zombiesInfo.Enqueue(zombie);
 	}
 
 	public static void PushCarInfo(EnemyMoveInfo car)
 	{
-		Vector3 camPos = Camera.main.transform.position;
-		Debug.Log("\nPushCarInfo\n start time " + car.startTime + " end time " + car.endTime
-			+ "\n start pos " + car.startPos + " end pos " + car.endPos + "\n camera " + camPos
-			+ "\n dist 1 " + Vector3.Distance(car.startPos, camPos) + " dist 2 " + Vector3.Distance(car.startPos, camPos));
+		//Vector3 camPos = Camera.main.transform.position;
+		//Debug.Log("\nPushCarInfo\n start time " + car.startTime + " end time " + car.endTime
+		//	+ "\n start pos " + car.startPos + " end pos " + car.endPos + "\n camera " + camPos
+		//	+ "\n dist 1 " + Vector3.Distance(car.startPos, camPos) + " dist 2 " + Vector3.Distance(car.startPos, camPos));
 		carsInfo.Enqueue(car);
+	}
+
+	public static void PushСollisionInfo(Vector3 charPos, float time)
+	{
+		collisionRecords.Enqueue(new СollisionInfo(charPos, time));
 	}
 }

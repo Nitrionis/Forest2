@@ -455,6 +455,7 @@
     <Compile Include="Assets\Scripts\LevelsSystem\StaticRoadSystem.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\StaticZombieMover.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\Trajectory.cs" />
+    <Compile Include="Assets\Scripts\LevelsSystem\TreeDebug.cs" />
     <Compile Include="Assets\Scripts\LevelsSystem\ZombieMover.cs" />
     <Compile Include="Assets\Scripts\Reticle.cs" />
     <Compile Include="Assets\Scripts\ReticleChanger.cs" />

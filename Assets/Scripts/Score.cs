@@ -26,6 +26,7 @@ public class Score : MonoBehaviour
 	public GameObject wastedComment;
 	public Text currentScoreText;
 	public Text recordScoreText;
+	public Text timeText;
 
 	private static int prevScore;
 	private static bool isFirstPlay;
@@ -69,6 +70,9 @@ public class Score : MonoBehaviour
 		if (isGameStarted)
 		{
 			timer += Time.deltaTime;
+			timeText.text = "Time " + ((int)timer).ToString();
+			if (timer >= 600)
+				GameOver(true);
 			fscore += Time.deltaTime * 16 * scoreCoef;
 			score = (int)fscore;
 			scoreObject.text = score.ToString();
@@ -84,27 +88,39 @@ public class Score : MonoBehaviour
 
 	public static void Сollision()
 	{
+		StatisticsManager.PushСollisionInfo(Map.LevelGenerator.instance.character.position, timer);
 		if (/*false && */notСollisionTimeCounter > 2 && hp > 0)
 		{
 			notСollisionTimeCounter = 0;
 			instance.hpStrips[hp - 1].SetActive(false);
 			hp = Mathf.Max(0, hp - 1);
-			if (hp == 0/* && Input.GetKey(KeyCode.R)*/)
+			if (hp == 0)
 			{
 				int maxScore = PlayerPrefs.GetInt("recordScore", 0);
 				if (score > maxScore)
 				{
-					isWasted = false;
-					PlayerPrefs.SetInt("recordScore", score);
+					GameOver(true);
 				}
-				else isWasted = true;
-				isGameStarted = false;
-				hp = 3;
-				prevScore = score;
-				score = 0;
-				fscore = 0;
-				SceneManager.LoadScene("MainScene");
+				else
+				{
+					GameOver(false);
+				}
 			}
 		}
+	}
+
+	public static void GameOver(bool isWell)
+	{
+		int maxScore = PlayerPrefs.GetInt("recordScore", 0);
+		if (score > maxScore)
+			PlayerPrefs.SetInt("recordScore", score);
+
+		isWasted = !isWell;
+		isGameStarted = false;
+		hp = 3;
+		prevScore = score;
+		score = 0;
+		fscore = 0;
+		SceneManager.LoadScene("MainScene");
 	}
 }

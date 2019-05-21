@@ -99,8 +99,9 @@ namespace Map
 					tree.rotationIndex = 0;
 					tree.scaleIndex = 0;
 					tree.position = line.position + (x - gridWidth / 2) * line.treesSpacing * Vector3.right;
+					//tree.debugObject.transform.position = tree.position;
 					if ((Vector3.Angle(forward, tree.position - posForCulling) <= halfFOV)
-						&& (Vector3.Distance(tree.position, character.position) < 80)
+						&& (Vector3.Distance(tree.position, character.position) < 55)
 						&& (pool.Count > 0))
 					{
 						var go = pool.Pop();
@@ -138,7 +139,7 @@ namespace Map
 			prevPositions[uniqueTreeId] = tree.position;
 			return (0.18f + 0.14f * CustomRandom.Get(uniqueTreeId) 
 				* spacingDependencyByScale[tree.scaleIndex])
-				* gradients[(int)(15.99f * CustomRandom.Get(uniqueTreeId + 1))] * treesSpacing;
+				* gradients[(int)(15.99f * CustomRandom.Get(uniqueTreeId + 1))] * line.treesSpacing;
 		}
 
 		protected Vector3 GetRandomOffset(StaticTreesLine line, Tree tree, uint uniqueTreeId)
@@ -150,7 +151,7 @@ namespace Map
 			prevPositions[uniqueTreeId] = tree.position;
 			return (0.18f + 0.14f * CustomRandom.Get(uniqueTreeId)
 				* spacingDependencyByScale[tree.scaleIndex])
-				* gradients[(int)(15.99f * CustomRandom.Get(uniqueTreeId + 1))] * treesSpacing;
+				* gradients[(int)(15.99f * CustomRandom.Get(uniqueTreeId + 1))] * line.treesSpacing;
 		}
 
 		private void CheckTreePosition(Tree tree, uint uniqueTreeId)
@@ -165,18 +166,19 @@ namespace Map
 
 		protected override void ForestMoveX(int sdi)
 		{
-			Vector3 pos = grid[sdi].position;
+			var line = grid[sdi];
+			Vector3 pos = line.position;
 			float delta = pos.x - character.position.x;
-			if (Mathf.Abs(delta) > treesSpacing)
+			if (Mathf.Abs(delta) > line.treesSpacing)
 			{
 				if (delta < 0)
 				{
-					pos += Vector3.right * treesSpacing;
+					pos += Vector3.right * line.treesSpacing;
 					MoveRight(pos);
 				}
 				else
 				{
-					pos += Vector3.left * treesSpacing;
+					pos += Vector3.left * line.treesSpacing;
 					MoveLeft(pos);
 				}
 			}
@@ -196,6 +198,9 @@ namespace Map
 				tree.position = new Vector3(leftPos, treesLine.position.y, treesLine.position.z);
 
 				tree.position += GetRandomOffset(treesLine, tree, uniqueTreeId);
+
+				//tree.debugObject.transform.position = tree.position;
+
 
 				if (tree.treeObject != null)
 				{
@@ -228,6 +233,8 @@ namespace Map
 				tree.position = new Vector3(rightPos, treesLine.position.y, treesLine.position.z);
 
 				tree.position += GetRandomOffset(treesLine, tree, uniqueTreeId);
+
+				//tree.debugObject.transform.position = tree.position;
 
 				if (tree.treeObject != null)
 				{
@@ -279,6 +286,8 @@ namespace Map
 						tree.treeObject = null;
 					}
 					tree.isActive = !RoadSystem.CheckCollision(tree.position);
+
+					//tree.debugObject.transform.position = tree.position;
 				}
 				startGridIndex = (startGridIndex + 1) % gridDepth;
 
@@ -291,6 +300,9 @@ namespace Map
 			//float minDist = float.PositiveInfinity;
 			Vector3 forward = characterCamera.forward;
 			Vector3 posForCulling = character.position - characterCamera.forward * 10;
+
+			int activeCount = 0;
+
 			for (int d = 0; d < grid.Length; d++)
 			{
 				for (int x = 0; x < gridWidth; x++)
@@ -309,6 +321,8 @@ namespace Map
 					float angle = Vector3.Angle(forward, tree.position - posForCulling);
 					if ((angle <= halfFOV && distance < 55) || distance < 10)
 					{
+						activeCount++;
+						//tree.debugMaterial.SetColor("_Color", Color.green);
 						if ((pool.Count > 0) && (tree.treeObject == null) && tree.isActive)
 						{
 							var go = pool.Pop();
@@ -320,6 +334,7 @@ namespace Map
 					}
 					else if (tree.treeObject != null)
 					{
+						//tree.debugMaterial.SetColor("_Color", Color.red);
 						pool.Push(tree.treeObject);
 						if (!tree.isActive)
 							tree.treeObject.mainTransform.position += Vector3.down * 16;
@@ -327,6 +342,8 @@ namespace Map
 					}
 				}
 			}
+
+			//Debug.Log("ActiveCount " + activeCount);
 		}
 
 		public override TreesLine[] GetGrid()

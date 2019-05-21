@@ -5,7 +5,7 @@ public class Trajectory : MonoBehaviour
 {
 	private static class RecordsManager
 	{
-		public const int MaxrecordsCount = 60 * 25 * 10;
+		public const int MaxrecordsCount = 10 * 60 * 25 + 100;
 		private static int[] recordsCount;
 		private static Vector3[][] positions;
 		private static Quaternion[][] rotations;
@@ -37,8 +37,15 @@ public class Trajectory : MonoBehaviour
 
 		public static void PushRecord(Vector3 pos)
 		{
-			positions[currentBufferIndex][recordsCount[currentBufferIndex]] = pos;
-			recordsCount[currentBufferIndex]++;
+			if (recordsCount[currentBufferIndex] < MaxrecordsCount)
+			{
+				positions[currentBufferIndex][recordsCount[currentBufferIndex]] = pos;
+				recordsCount[currentBufferIndex]++;
+			}
+			else
+			{
+				Score.GameOver(true);
+			}
 		}
 
 		public static void Swap()
@@ -66,7 +73,7 @@ public class Trajectory : MonoBehaviour
 	private Vector3[] positions;
 
 	private LineRenderer lineRenderer;
-	private int startRecordIndex = 0;
+	private int startRecordIndex;
 	private int endRecordIndex;
 
 	public Transform character;
@@ -82,17 +89,19 @@ public class Trajectory : MonoBehaviour
 		recordsCount = RecordsManager.GetPreviousTrajectoryRecordsCount();
 		positions = RecordsManager.GetPreviousTrajectory();
 		visibleTrajectoryPointsCount = (int)(trajectoryDistance / Time.fixedDeltaTime);
+
+		startRecordIndex = 0;
 		endRecordIndex = Mathf.Min(
 			recordsCount, startRecordIndex + visibleTrajectoryPointsCount);
+
 		visibleTrajectory = new Vector3[visibleTrajectoryPointsCount];
 		Array.Copy(positions, visibleTrajectory, Mathf.Min(recordsCount, visibleTrajectoryPointsCount));
 	}
 
-    void FixedUpdate()
-    {
-		if (Score.isGameStarted)
-			RecordsManager.PushRecord(characterPosition.position + Vector3.down * 1f);
+	private float time = 0;
 
+	void Update()
+	{
 		int prevStartIndex = startRecordIndex;
 		while (startRecordIndex < recordsCount && positions[startRecordIndex].z < characterPosition.position.z)
 			startRecordIndex++;
@@ -100,18 +109,45 @@ public class Trajectory : MonoBehaviour
 			return;
 		endRecordIndex = Mathf.Min(
 			recordsCount, startRecordIndex + visibleTrajectoryPointsCount);
-		
-		if (prevStartIndex != startRecordIndex)
+
+		int newVerticesCount = Mathf.Max(0, endRecordIndex - startRecordIndex);
+		//if (prevStartIndex != startRecordIndex)
+		//{
+
+		//	//Array.Copy(
+		//	//	positions, startRecordIndex,
+		//	//	visibleTrajectory, 0,
+		//	//	newVerticesCount);
+		//	//lineRenderer.positionCount = newVerticesCount;
+		//	//lineRenderer.SetPositions(visibleTrajectory);
+		//}
+		if (startRecordIndex > 0)
 		{
-			int newVerticesCount = Mathf.Min(
-				recordsCount, 
-				visibleTrajectoryPointsCount);
-			Array.Copy(
-				positions, startRecordIndex, 
-				visibleTrajectory, 0, 
-				newVerticesCount);
+			float t = (characterPosition.position.z - positions[startRecordIndex - 1].z)
+				/ (positions[startRecordIndex].z - positions[startRecordIndex - 1].z);
+
+			t = (time += Time.deltaTime);
+			//Debug.Log("parametr t " + t);
+
+			//string msg = "Trajectory";
+
+			for (int i = 0, j = startRecordIndex; i < newVerticesCount-1 && j < endRecordIndex; i++, j++)
+			{
+				visibleTrajectory[i] = Vector3.Lerp(positions[j], positions[j + 1], t);
+				//msg += "\n j=" + j + " positions[j]=" + positions[j] + " positions[j + 1]=" + positions[j + 1];
+			}
+			visibleTrajectory[newVerticesCount - 1] = positions[endRecordIndex - 1];
+
+			//Debug.Log(msg);
+
 			lineRenderer.positionCount = newVerticesCount;
 			lineRenderer.SetPositions(visibleTrajectory);
 		}
+	}
+
+	void FixedUpdate()
+    {
+		if (Score.isGameStarted)
+			RecordsManager.PushRecord(characterPosition.position + Vector3.down * 1f);
 	}
 }

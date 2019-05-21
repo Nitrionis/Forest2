@@ -84,14 +84,14 @@ namespace Map
 
 		protected virtual void DeactivatePlane()
 		{
-			Debug.Log("DeactivatePlane " + dynamicPlanesCount);
+			//Debug.Log("DeactivatePlane " + dynamicPlanesCount);
 			var plane = activePlanes.Dequeue();
 			freePlanes.Enqueue(plane);
 		}
 
 		public void DeactivateAllPlanes()
 		{
-			Debug.Log("DeactivateAllPlanes " + activePlanes.Count);
+			//Debug.Log("DeactivateAllPlanes " + activePlanes.Count);
 			while (activePlanes.Count > 0)
 			{
 				DeactivatePlane();
