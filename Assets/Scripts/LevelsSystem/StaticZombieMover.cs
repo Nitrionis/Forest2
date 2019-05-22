@@ -38,7 +38,7 @@ namespace Map
 
 						if (mobs[i].startPos.z > 0)
 						{
-							mobs[i].endPos = newPos;
+							mobs[i].endPos = pos;
 							mobs[i].endTime = Score.timer;
 
 							var zombieInfo = new StatisticsManager.EnemyMoveInfo(

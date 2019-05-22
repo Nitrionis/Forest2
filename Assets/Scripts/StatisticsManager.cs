@@ -99,7 +99,7 @@ public class StatisticsManager
 				WriteEnemyMoveInfo(writer, carsInfo.Dequeue());
 
 			writer.Write(collisionRecords.Count);
-			while (carsInfo.Count > 0)
+			while (collisionRecords.Count > 0)
 			{
 				var info = collisionRecords.Dequeue();
 				WriteVector3(writer, info.pos);

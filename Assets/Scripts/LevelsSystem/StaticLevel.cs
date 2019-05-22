@@ -22,7 +22,7 @@ namespace Map
 
 		public virtual float GetTreeSpacing(float difficulty)
 		{
-			return 10.0f;
+			return 12.0f;
 		}
 
 		public abstract Level CreateNew(float difficulty, float startPos);

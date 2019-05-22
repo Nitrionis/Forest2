@@ -5,6 +5,7 @@ public class CameraMover : MonoBehaviour
 {
 	public static CameraMover instance;
 
+	public Transform rotationInput;
 	public Transform movebleObject;
 	public Transform antirotationObject;
 	public Slider slider;
@@ -70,8 +71,8 @@ public class CameraMover : MonoBehaviour
 		{
 			currRotation = Mathf.Min(currRotation + rotationSpeed * Time.deltaTime, maxAngle);
 		}
-		currRotation = transform.rotation.eulerAngles.y;
-		float currRotationZ = transform.rotation.eulerAngles.z;
+		currRotation = rotationInput.rotation.eulerAngles.y;
+		float currRotationZ = rotationInput.rotation.eulerAngles.z;
 		if (currRotationZ > 180)
 			currRotationZ -= 360;
 		if (currRotation > 180)

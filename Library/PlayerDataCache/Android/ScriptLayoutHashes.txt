@@ -4,7 +4,7 @@ C:/Users/Nitro/Desktop/app.apk
 SceneListBegin?
 Assets/Scenes/MainScene.unity
 SceneListEnd?
-dd9da675021c3510c4f55177c778f0e1 Assembly-CSharp.dll:.Score
+59a3aa43fb3c3b7aacb11111c2588880 Assembly-CSharp.dll:.Score
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.ONSPVersion
 bf5cb87c773ea378a3f5ac036aab367b Assembly-CSharp.dll:.SocialPlatformManager
 984dcc0ba3707b7691fbdca8ff508d28 Unity.TextMeshPro.dll:TMPro.TMP_SelectionCaret
@@ -137,6 +137,7 @@ e1bbf0ab858085e38fae6b12ebbdcd35 UnityEngine.Timeline.dll:UnityEngine.Timeline.G
 e1bbf0ab858085e38fae6b12ebbdcd35 UnityEngine.Timeline.dll:UnityEngine.Timeline.PlayableTrack
 201e3fde670b00545944bb3db215c80a UnityEngine.Timeline.dll:UnityEngine.Timeline.TimelineAsset
 6fa741eccd86c0bea38117a65515b359 Assembly-CSharp.dll:.GvrScrollSettings
+08587ac5fbb58b35f1b3aac34bf23df6 Assembly-CSharp.dll:.Reticle
 00274a21279f5cb831ce20f895049e38 Unity.TextMeshPro.dll:TMPro.TMP_SubMeshUI
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:GoogleVR.Demos.DemoSceneManager
 e6ae40841db498b6e673877ac45ad208 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkAnimator
@@ -257,7 +258,7 @@ a4b88f3b08f1f148e04c6c3d7544c9ec Oculus.VR.dll:.OVRChromaticAberration
 adc2b542e0a57ddf4fccdca7c61e08d5 Assembly-CSharp.dll:.Antirotation
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:Oculus.Platform.Samples.VrHoops.PlatformManager
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.GvrControllerTooltipsSimple
-9c73a2592615ad6cafd377334b823e08 Assembly-CSharp.dll:.CameraMover
+e3d40995064ccdfe8119f3a07676962c Assembly-CSharp.dll:.CameraMover
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.OvrAvatarSettingsEditor
 71bb6a6b6c8f052f948db64c7dd3ca4f UnityEngine.Advertisements.dll:UnityEngine.Advertisements.CallbackExecutor
 8b9f42d72019bde2f9fe0667762eaff3 Assembly-CSharp.dll:.OvrAvatarProjectorRenderComponent
@@ -310,6 +311,7 @@ b64df5204061416485f2c88a94a64db0 Assembly-CSharp.dll:.OVRMicInput
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:GoogleVR.VideoDemo.ScrubberEvents
 492e4075bfded9fb3f0d520048f29f83 Oculus.VR.dll:UnityEngine.EventSystems.OVRInputModule
 11206112ec687db2172d3c94b2bdc0f2 Oculus.VR.dll:.OVRGrabber
+5997239baff100a7b15623d07d42e5e6 Assembly-CSharp.dll:.TreeDebug
 b5be90544603fd5604bfcc31deb77313 Assembly-CSharp.dll:.ONSPPropagationGeometry
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.OvrAvatarHand
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:GoogleVR.VideoDemo.VideoControlsManager

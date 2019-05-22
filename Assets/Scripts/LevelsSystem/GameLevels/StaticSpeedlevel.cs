@@ -9,7 +9,7 @@ namespace Map
 		private const float hardSpeed = 35;
 
 		private const float easyTreesSpacing = 16;
-		private const float hardTreesSpacing = 16;
+		private const float hardTreesSpacing = 17;
 
 		private const int easyLinesCount = 40;
 		private const int hardLinesCount = 30;

@@ -14,6 +14,7 @@ public class Score : MonoBehaviour
 	public static int score = 0;
 	public static float fscore = 0;
 	public static float timer;
+	public static int poolSize;
 
 	public static bool isGameStarted = false;
 
@@ -70,7 +71,7 @@ public class Score : MonoBehaviour
 		if (isGameStarted)
 		{
 			timer += Time.deltaTime;
-			timeText.text = "Time " + ((int)timer).ToString();
+			timeText.text = "Pool size " + (poolSize).ToString();
 			if (timer >= 600)
 				GameOver(true);
 			fscore += Time.deltaTime * 16 * scoreCoef;

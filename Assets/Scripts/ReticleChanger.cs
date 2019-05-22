@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 public class ReticleChanger : MonoBehaviour
 {
+	public static ReticleChanger instance;
+
 	public GameObject reticle;
 	private Material material;
 	private int sizeId;
@@ -18,6 +19,7 @@ public class ReticleChanger : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
     {
+		instance = this;
 		timeCount = 0;
 		isActive = false;
 		currColor = disabledColor;
@@ -38,9 +40,7 @@ public class ReticleChanger : MonoBehaviour
 			material.SetColor(colorId, Color.Lerp(disabledColor, activeColor, t));
 			if (t >= 1)
 			{
-				Score.isGameStarted = true;
-				foreach (var o in deactivatableObjectsList)
-					o.SetActive(false);
+				Run();
 			}
 		}
     }
@@ -57,5 +57,12 @@ public class ReticleChanger : MonoBehaviour
 		timeCount = 0;
 		material.SetFloat(sizeId, 1.0f);
 		material.SetColor(colorId, disabledColor);
+	}
+
+	public static void Run()
+	{
+		Score.isGameStarted = true;
+		foreach (var o in instance.deactivatableObjectsList)
+			o.SetActive(false);
 	}
 }

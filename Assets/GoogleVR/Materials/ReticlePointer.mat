@@ -64,11 +64,11 @@ Material:
     - _DstBlend: 0
     - _Glossiness: 0.5
     - _InnerCoef: 1
-    - _InnerDiameter: 1.5
+    - _InnerDiameter: 4.67
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
-    - _OuterDiameter: 2
+    - _OuterDiameter: 7.77
     - _Parallax: 0.02
     - _Radius: 0
     - _SrcBlend: 1

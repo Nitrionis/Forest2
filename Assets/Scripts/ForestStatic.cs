@@ -101,7 +101,7 @@ namespace Map
 					tree.position = line.position + (x - gridWidth / 2) * line.treesSpacing * Vector3.right;
 					//tree.debugObject.transform.position = tree.position;
 					if ((Vector3.Angle(forward, tree.position - posForCulling) <= halfFOV)
-						&& (Vector3.Distance(tree.position, character.position) < 55)
+						&& (Vector3.Distance(tree.position, character.position) < 65)
 						&& (pool.Count > 0))
 					{
 						var go = pool.Pop();
@@ -297,6 +297,7 @@ namespace Map
 
 		protected override void TreesCulling()
 		{
+			Score.poolSize = pool.Count;
 			//float minDist = float.PositiveInfinity;
 			Vector3 forward = characterCamera.forward;
 			Vector3 posForCulling = character.position - characterCamera.forward * 10;
@@ -319,7 +320,7 @@ namespace Map
 					//	CameraMover.NonfatalСollision();
 
 					float angle = Vector3.Angle(forward, tree.position - posForCulling);
-					if ((angle <= halfFOV && distance < 55) || distance < 10)
+					if ((angle <= halfFOV && distance < 65) || distance < 10)
 					{
 						activeCount++;
 						//tree.debugMaterial.SetColor("_Color", Color.green);
