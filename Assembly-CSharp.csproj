@@ -462,6 +462,8 @@
     <Compile Include="Assets\Scripts\Score.cs" />
     <Compile Include="Assets\Scripts\SkyboxChanger.cs" />
     <Compile Include="Assets\Scripts\StatisticsManager.cs" />
+    <Compile Include="Assets\Scripts\UI\SharedButton.cs" />
+    <Compile Include="Assets\Scripts\UI\StartButton.cs" />
     <Compile Include="Assets\Scripts\WheelMover.cs" />
     <Compile Include="Assets\Scripts\СollisionСheck.cs" />
     <None Include="Assets\Shaders\MobsGlow.shader" />

@@ -35,11 +35,12 @@ public class Trajectory : MonoBehaviour
 			return recordsCount[1 - currentBufferIndex];
 		}
 
-		public static void PushRecord(Vector3 pos)
+		public static void PushRecord(Vector3 pos, Quaternion rot)
 		{
 			if (recordsCount[currentBufferIndex] < MaxrecordsCount)
 			{
 				positions[currentBufferIndex][recordsCount[currentBufferIndex]] = pos;
+				rotations[currentBufferIndex][recordsCount[currentBufferIndex]] = rot;
 				recordsCount[currentBufferIndex]++;
 			}
 			else
@@ -148,6 +149,6 @@ public class Trajectory : MonoBehaviour
 	void FixedUpdate()
     {
 		if (Score.isGameStarted)
-			RecordsManager.PushRecord(characterPosition.position + Vector3.down * 1f);
+			RecordsManager.PushRecord(characterPosition.position + Vector3.down * 1f, character.rotation);
 	}
 }

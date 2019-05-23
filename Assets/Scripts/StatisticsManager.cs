@@ -20,6 +20,8 @@ public class TrajectoryStatistics
 	EnemyMoveInfo[cars records count] carsMovement
 	int collision records count
 	СollisionInfo[collision records count] collisionRecords
+	int Age
+	int gender
  */
 
 public class StatisticsManager
@@ -53,6 +55,8 @@ public class StatisticsManager
 	private static readonly Queue<EnemyMoveInfo> zombiesInfo;
 	private static readonly Queue<EnemyMoveInfo> carsInfo;
 	private static readonly Queue<СollisionInfo> collisionRecords;
+	private static int age;
+	private static int gender;
 
 	static StatisticsManager()
 	{
@@ -105,6 +109,9 @@ public class StatisticsManager
 				WriteVector3(writer, info.pos);
 				writer.Write(info.time);
 			}
+
+			writer.Write((int)age);
+			writer.Write((int)gender);
 		}
 	}
 
@@ -182,5 +189,15 @@ public class StatisticsManager
 	public static void PushСollisionInfo(Vector3 charPos, float time)
 	{
 		collisionRecords.Enqueue(new СollisionInfo(charPos, time));
+	}
+
+	public static void SetAge(ButtonAction action)
+	{
+		age = (int)action;
+	}
+
+	public static void SetGender(ButtonAction action)
+	{
+		gender = (int)action;
 	}
 }
