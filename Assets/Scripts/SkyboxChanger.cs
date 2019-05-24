@@ -32,31 +32,41 @@ public class SkyboxChanger : MonoBehaviour
 	public Color[] zombieColors;
 	private Color targetNightColor;
 
+	private Color transitionStartColor;
+	private float transitionStartLightIntensity;
+	private float transitionFogEnd;
+
 	void Start()
     {
 		instance = this;
 		light.intensity = 1.08f;
+		transitionStartLightIntensity = 1.08f;
 		daySkyColor = skybox.GetColor("_Tint");
 		fogDayColor = RenderSettings.fogColor;
 		colorParamId = Shader.PropertyToID("_Color");
+
+		//Time.timeScale = 16;
 	}
 
     void Update()
     {
+		//if (Score.score > 5300 && Time.timeScale != 1)
+		//	Time.timeScale = 1;
+
 		timeCount += Time.deltaTime;
 		float t = timeCount / dayNightShiftDuration;
 		if (state > 0)
 		{
 			if (t <= 1)
 			{
-				light.intensity = Mathf.Lerp(1.08f, 0.2f, t);
-				RenderSettings.fogColor = Color.Lerp(RenderSettings.fogColor, fogEveningColor, t);
+				light.intensity = Mathf.Lerp(transitionStartLightIntensity, 0.2f, t);
+				RenderSettings.fogColor = Color.Lerp(transitionStartColor, fogEveningColor, t);
 			}
 			else if (t <= 2)
 			{
 				t -= 1;
-				RenderSettings.fogColor = Color.Lerp(RenderSettings.fogColor, targetNightColor, t);
-				RenderSettings.fogEndDistance = Mathf.Lerp(fogDayDistance, fogNightDistance, t);
+				RenderSettings.fogColor = Color.Lerp(fogEveningColor, targetNightColor, t);
+				RenderSettings.fogEndDistance = Mathf.Lerp(transitionFogEnd, fogNightDistance, t);
 			}
 			else state = 0;
 		}
@@ -64,7 +74,7 @@ public class SkyboxChanger : MonoBehaviour
 		{
 			if (t <= 1)
 			{
-				RenderSettings.fogColor = Color.Lerp(RenderSettings.fogColor, fogEveningColor, t);
+				RenderSettings.fogColor = Color.Lerp(targetNightColor, fogEveningColor, t);
 				RenderSettings.fogEndDistance = Mathf.Lerp(fogNightDistance, fogDayDistance, t);
 			}
 			else if (t <= 2)
@@ -77,8 +87,12 @@ public class SkyboxChanger : MonoBehaviour
 		}
     }
 
-	public static void DayToNight()
+	public static void DayToNight(bool isLastLevelZombie = false)
 	{
+		instance.transitionStartColor = RenderSettings.fogColor;
+		instance.transitionStartLightIntensity = instance.light.intensity;
+		instance.transitionFogEnd = RenderSettings.fogEndDistance;
+
 		int colorThemeId = (int)(Random.value * instance.fogNightColors.Length - 0.001f);
 		instance.targetNightColor = instance.fogNightColors[colorThemeId];
 		instance.zombieBodyMaterial.SetColor(instance.colorParamId, instance.zombieColors[colorThemeId]);
@@ -87,7 +101,7 @@ public class SkyboxChanger : MonoBehaviour
 		instance.timeCount = 0;
 	}
 
-	public static void NightToDay()
+	public static void NightToDay(bool isNextLevelZombie = false)
 	{
 		instance.state = -1;
 		instance.timeCount = 0;

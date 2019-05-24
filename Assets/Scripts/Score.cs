@@ -89,9 +89,9 @@ public class Score : MonoBehaviour
 
 	public static void Сollision()
 	{
-		StatisticsManager.PushСollisionInfo(Map.LevelGenerator.instance.character.position, timer);
-		if (/*false && */notСollisionTimeCounter > 2 && hp > 0)
+		if (/*false && */notСollisionTimeCounter > 2 && hp > 0)// todo
 		{
+			StatisticsManager.PushСollisionInfo(Map.LevelGenerator.instance.character.position, timer);
 			notСollisionTimeCounter = 0;
 			instance.hpStrips[hp - 1].SetActive(false);
 			hp = Mathf.Max(0, hp - 1);

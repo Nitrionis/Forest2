@@ -115,12 +115,11 @@ public class StatisticsManager
 		}
 	}
 
-	public static int Read(Vector3[] data)
+	public static int Read(Vector3[] positions, Quaternion[] quaternions)
 	{
 		int uniqueFileId = PlayerPrefs.GetInt("uniqueStatisticsId", 0);
 		string fileName = Application.persistentDataPath + path + uniqueFileId.ToString();
 		int recordsCount = 0;
-		//string msg = "Read Trajectory\n";
 		if (File.Exists(fileName))
 		{
 			using (BinaryReader reader = new BinaryReader(File.Open(fileName, FileMode.Open)))
@@ -128,12 +127,14 @@ public class StatisticsManager
 				recordsCount = reader.ReadInt32();
 				for (int i = 0; i < recordsCount; i++)
 				{
-					data[i] = ReadVector3(reader);
-					//msg += "i=" + i + " pos=" + data[i] + "\n";
+					positions[i] = ReadVector3(reader);
 				}
+				//for (int i = 0; i < recordsCount; i++)
+				//{
+				//	quaternions[i] = ReadQuaternion(reader);
+				//}
 			}
 		}
-		//Debug.Log(msg);
 		return recordsCount;
 	}
 
@@ -163,6 +164,11 @@ public class StatisticsManager
 	private static Vector3 ReadVector3(BinaryReader reader)
 	{
 		return new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+	}
+
+	private static Quaternion ReadQuaternion(BinaryReader reader)
+	{
+		return new Quaternion(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
 	}
 
 	public static void PushPlaneInfo(EnemyMoveInfo plane)

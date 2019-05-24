@@ -50,13 +50,12 @@ public class CameraMover : MonoBehaviour
 		upAxis = Vector3.Cross(mapDir, Vector3.right);
 		startRotation = movebleObject.rotation;
 
-		minShakeRotation = Quaternion.Euler(-10, 0,-5);
-		maxShakeRotation = Quaternion.Euler(30, 0, 5);
+		minShakeRotation = Quaternion.Euler(-1, 0,-1);
+		maxShakeRotation = Quaternion.Euler(10, 0, 1);
 
 		quadMaterial = quad.GetComponent<Renderer>().material;
 		colorId = Shader.PropertyToID("_Color");
 		quadMaterial.SetColor(colorId, new Color(1, 1, 1, 0));
-		//rigidbody = movebleObject.GetComponent<Rigidbody>();
 	}
 
 	private Color lastColor;
@@ -71,6 +70,7 @@ public class CameraMover : MonoBehaviour
 		{
 			currRotation = Mathf.Min(currRotation + rotationSpeed * Time.deltaTime, maxAngle);
 		}
+
 		currRotation = rotationInput.rotation.eulerAngles.y;
 		float currRotationZ = rotationInput.rotation.eulerAngles.z;
 		if (currRotationZ > 180)

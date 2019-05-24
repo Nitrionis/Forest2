@@ -34,14 +34,17 @@ namespace Map
 		{
 			zombieMover.isMoveActive = true;
 			zombieMover.isSpawnActive = true;
-			SkyboxChanger.DayToNight();
+			SkyboxChanger.DayToNight(lastlLevel.levelType == LevelType.Zombies);
 		}
 
 		public override void Finish()
 		{
-			zombieMover.isSpawnActive = false;
-			zombieMover.isMoveActive = false;
-			SkyboxChanger.NightToDay();
+			if (nextLevelType != LevelType.Zombies)
+			{
+				zombieMover.isSpawnActive = false;
+				zombieMover.isMoveActive = false;
+				SkyboxChanger.NightToDay(false);
+			}
 		}
 	}
 }

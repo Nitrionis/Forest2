@@ -30,20 +30,20 @@ public class ReticleChanger : MonoBehaviour
 	}
 
     // Update is called once per frame
-    void Update()
-    {
-        if (isActive)
-		{
-			timeCount += Time.deltaTime;
-			float t = Mathf.Clamp01(0.7f * timeCount - timeOffset);
-			material.SetFloat(sizeId, Mathf.Lerp(1.0f, 0.01f, t));
-			material.SetColor(colorId, Color.Lerp(disabledColor, activeColor, t));
-			if (t >= 1)
-			{
-				Run();
-			}
-		}
-    }
+  //  void Update()
+  //  {
+  //      if (isActive)
+		//{
+		//	timeCount += Time.deltaTime;
+		//	float t = Mathf.Clamp01(0.7f * timeCount - timeOffset);
+		//	material.SetFloat(sizeId, Mathf.Lerp(1.0f, 0.01f, t));
+		//	material.SetColor(colorId, Color.Lerp(disabledColor, activeColor, t));
+		//	if (t >= 1)
+		//	{
+		//		//Run();
+		//	}
+		//}
+  //  }
 
 	public void Activate()
 	{

@@ -9,7 +9,8 @@ public enum ButtonAction
 	Age_26_35 = 4,
 	Age_36_more = 5,
 	Female = 6,
-	Male = 7
+	Male = 7,
+	Undefined = 8
 }
 
 public interface IButton
@@ -67,12 +68,13 @@ public class Reticle : MonoBehaviour
 	{
 		timeOver = Mathf.Clamp01(timeOver + Time.deltaTime);
 		material.SetFloat(rangePropId, 1 - timeOver);
-		if (timeOver == 1)
+		if (timeOver == 1 && isReticleActive)
 		{
 			ButtonAction buttonAction = button.GetActionCode();
 			if (buttonAction == ButtonAction.Start)
 			{
 				ReticleChanger.Run();
+				//Debug.Log("-------------------------ReticleChanger.Run();");
 				reticlePointer.SetActive(false);
 				defaultReticle.SetActive(false);
 				isReticleActive = false;

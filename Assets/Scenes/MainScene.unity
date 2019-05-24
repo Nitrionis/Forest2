@@ -28255,7 +28255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5413e72917362c4aa292925b1887d10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  character: {fileID: 1117502034}
+  character: {fileID: 1217658750}
   characterPosition: {fileID: 1979808319}
   trajectoryDistance: 5
 --- !u!120 &1979808324

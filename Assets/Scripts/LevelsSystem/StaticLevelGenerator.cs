@@ -64,25 +64,7 @@ namespace Map
 
 			for (int i = 2; i < levelsCountPerMap; i++)
 			{
-				//mode2 = (mode2 + 1) % 2;
-				//if (mode2 == 1)
-				//{
-				//	awaitingLevels.Enqueue(new AwaitingLevel(Level.LevelType.Planes, ednOfPrevLevel));
-				//	if (nextLineUniqueId < spacings.Length)
-				//		AddLevelToSpacings(Level.LevelType.Planes, 0 /* TODO */, ref nextLineUniqueId);
-				//}
-				//else
-				//{
-				//	awaitingLevels.Enqueue(new AwaitingLevel(Level.LevelType.Zombies, ednOfPrevLevel));
-				//	if (nextLineUniqueId < spacings.Length)
-				//		AddLevelToSpacings(Level.LevelType.Zombies, 0 /* TODO */, ref nextLineUniqueId);
-				//}
 				Level.LevelType levelType = (Level.LevelType)(uint)(3.99f * CustomRandom.Get((uint)i) + 1);
-
-				if (i < 50)
-					Debug.Log("LevelType " + levelType.ToString()
-						+ " Start position " + ednOfPrevLevel);
-
 				float difficulty = GetDifficultyByPosition(ednOfPrevLevel);
 				awaitingLevels.Enqueue(new AwaitingLevel(levelType, ednOfPrevLevel, difficulty));
 				if (nextLineUniqueId < spacings.Length)
@@ -99,6 +81,7 @@ namespace Map
 				AwaitingLevel awaitingLevel = awaitingLevels.Dequeue();
 				Level.lastlLevel = ((StaticLevel)levelsKinds[(int)awaitingLevel.levelType]).CreateNew(
 					awaitingLevel.difficulty, awaitingLevel.startPosition);
+				Level.lastlLevel.nextLevelType = awaitingLevels.Peek().levelType;
 				levels.Enqueue(Level.lastlLevel);
 			}
 		}
@@ -156,6 +139,7 @@ namespace Map
 				AwaitingLevel awaitingLevel = awaitingLevels.Dequeue();
 				Level.lastlLevel = ((StaticLevel)levelsKinds[(int)awaitingLevel.levelType]).CreateNew(
 					awaitingLevel.difficulty, awaitingLevel.startPosition);
+				Level.lastlLevel.nextLevelType = awaitingLevels.Peek().levelType;
 				levels.Enqueue(Level.lastlLevel);
 			}
 		}

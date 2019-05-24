@@ -87,10 +87,6 @@ namespace Map
 
 		public override void Update()
 		{
-			if (Input.GetKeyDown(KeyCode.J))
-				foreach (var l in probabilities)
-					l.Print();
-
 			if (Score.isGameStarted)
 			{
 				Level.difficulty = Mathf.Clamp01(0.0001f * Score.fscore);

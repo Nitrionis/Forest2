@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Trajectory : MonoBehaviour
 {
-	private static class RecordsManager
+	public static class RecordsManager
 	{
 		public const int MaxrecordsCount = 10 * 60 * 25 + 100;
 		private static int[] recordsCount;
@@ -28,6 +28,11 @@ public class Trajectory : MonoBehaviour
 		public static Vector3[] GetPreviousTrajectory()
 		{
 			return positions[1 - currentBufferIndex];
+		}
+
+		public static Quaternion[] GetPreviousTrajectoryQuaternions()
+		{
+			return rotations[1 - currentBufferIndex];
 		}
 
 		public static int GetPreviousTrajectoryRecordsCount()
@@ -64,8 +69,8 @@ public class Trajectory : MonoBehaviour
 				StatisticsManager.Write(statistics);
 			}
 			
-			recordsCount[1 - currentBufferIndex] = StatisticsManager.Read(positions[1 - currentBufferIndex]);
-			
+			recordsCount[writeIndex] = StatisticsManager.Read(positions[writeIndex], rotations[writeIndex]);
+
 			recordsCount[currentBufferIndex] = 0;
 		}
 	}
@@ -112,16 +117,7 @@ public class Trajectory : MonoBehaviour
 			recordsCount, startRecordIndex + visibleTrajectoryPointsCount);
 
 		int newVerticesCount = Mathf.Max(0, endRecordIndex - startRecordIndex);
-		//if (prevStartIndex != startRecordIndex)
-		//{
-
-		//	//Array.Copy(
-		//	//	positions, startRecordIndex,
-		//	//	visibleTrajectory, 0,
-		//	//	newVerticesCount);
-		//	//lineRenderer.positionCount = newVerticesCount;
-		//	//lineRenderer.SetPositions(visibleTrajectory);
-		//}
+		
 		if (startRecordIndex > 0)
 		{
 			float t = (characterPosition.position.z - positions[startRecordIndex - 1].z)

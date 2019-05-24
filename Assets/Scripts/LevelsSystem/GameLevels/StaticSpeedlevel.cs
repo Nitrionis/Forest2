@@ -26,7 +26,6 @@ namespace Map
 		{
 			levelType = LevelType.Speed;
 			levelStartEnd = new Vector2(startPos - 10f, startPos + (treesLinesCount * treesLineSpacing) - 60f);
-			//Debug.Log("StaticSpeedLevel " + levelStartEnd);
 		}
 
 		public override Level CreateNew(float difficulty, float startPos)
@@ -51,18 +50,28 @@ namespace Map
 
 		public override void Start()
 		{
-			speed = 0;
 			targetSpeed = Mathf.Lerp(easySpeed, hardSpeed, difficulty);
-			CameraMover.LockSpeed(speed);
-			speedParticleSystem.Play();
-			Score.scoreCoef = 3f;
+			if (lastlLevel.levelType != LevelType.Speed)
+			{
+				speed = 0;
+				CameraMover.LockSpeed(speed);
+				speedParticleSystem.Play();
+				Score.scoreCoef = 3f;
+			}
+			else
+			{
+				speed = targetSpeed;
+			}
 		}
 
 		public override void Finish()
 		{
-			CameraMover.UnlockSpeed();
-			speedParticleSystem.Stop();
-			Score.scoreCoef = 1f;
+			if (nextLevelType != LevelType.Speed)
+			{
+				CameraMover.UnlockSpeed();
+				speedParticleSystem.Stop();
+				Score.scoreCoef = 1f;
+			}
 		}
 
 		public override void Update()

@@ -34,7 +34,8 @@ namespace Map
 			Planes		= 3,
 			Zombies		= 4
 		}
-		protected LevelType levelType;
+		public LevelType levelType;
+		public LevelType nextLevelType;
 
 
 		public Level(bool isEmpty)
