@@ -151,7 +151,7 @@ PlayerSettings:
     Android: com.NESTOR.FOREST
   buildNumber: {}
   AndroidBundleVersionCode: 2
-  AndroidMinSdkVersion: 23
+  AndroidMinSdkVersion: 21
   AndroidTargetSdkVersion: 28
   AndroidPreferredInstallLocation: 0
   aotOptions: 
